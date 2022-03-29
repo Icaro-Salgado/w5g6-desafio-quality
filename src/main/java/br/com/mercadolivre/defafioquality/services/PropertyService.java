@@ -13,4 +13,8 @@ public class PropertyService {
 
     private final ApplicationRepository<Property, UUID> propertyRepository;
 
+    public void calcPropertyPrice(UUID propertyId){
+
+
+    }
 }
