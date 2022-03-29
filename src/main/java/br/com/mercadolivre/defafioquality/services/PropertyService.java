@@ -16,6 +16,10 @@ public class PropertyService {
     private final ApplicationRepository<Property, UUID> propertyRepository;
 
     public BigDecimal calcPropertyPrice(UUID propertyId) throws NullIdException {
+        if(propertyId == null) {
+            throw new NullIdException("O id é nulo!");
+        }
+
         return null;
     }
 }
