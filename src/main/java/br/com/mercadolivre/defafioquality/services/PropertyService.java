@@ -1,5 +1,6 @@
 package br.com.mercadolivre.defafioquality.services;
 
+import br.com.mercadolivre.defafioquality.exceptions.NullIdException;
 import br.com.mercadolivre.defafioquality.models.Property;
 import br.com.mercadolivre.defafioquality.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ public class PropertyService {
 
     private final ApplicationRepository<Property, UUID> propertyRepository;
 
-    public BigDecimal calcPropertyPrice(UUID propertyId){
+    public BigDecimal calcPropertyPrice(UUID propertyId) throws NullIdException {
         return null;
     }
 }
