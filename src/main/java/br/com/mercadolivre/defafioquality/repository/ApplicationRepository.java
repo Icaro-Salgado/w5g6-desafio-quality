@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface ApplicationRepository<T, K> {
     public List<T> read() throws DatabaseReadException, DatabaseManagementException;
     public Optional<T> find(K id) throws DatabaseReadException, DatabaseManagementException;
-    public List<T> add(List<T> listToAdd) throws DatabaseWriteException, DatabaseReadException, DbEntryAlreadyExists, DatabaseManagementException;
-    public List<T> findBy(Map<String, Object> filters) throws DatabaseReadException, DatabaseManagementException;
+    public T add(T listToAdd) throws DatabaseWriteException, DatabaseReadException, DbEntryAlreadyExists, DatabaseManagementException;
     public Integer update(Map<String, Object> filters, Map<String, Object> values) throws DatabaseReadException, DatabaseWriteException, DatabaseManagementException;
 }
