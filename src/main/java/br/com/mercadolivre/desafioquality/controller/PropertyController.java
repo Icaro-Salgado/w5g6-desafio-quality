@@ -45,7 +45,7 @@ public class PropertyController {
         Property addedProperty = propertyService.addProperty(propertyToAdd);
 
         URI uri = uriBuilder
-                .path("/{id}")
+                .path("/api/v1/property/{id}")
                 .buildAndExpand(addedProperty.getId())
                 .toUri();
 

@@ -44,7 +44,7 @@ public class FileManager<T> {
             return objectMapper.readValue(db, typeParameterClass);
         } catch (IOException e) {
             throw new DatabaseReadException(
-                    "Não foi possível ler a database ".concat(filename)
+                    "Não foi possível ler a database ".concat(filename).concat(e.getMessage())
             );
         } catch (DatabaseManagementException e) {
             e.printStackTrace();
