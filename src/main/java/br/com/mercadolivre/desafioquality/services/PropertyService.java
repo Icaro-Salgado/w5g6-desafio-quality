@@ -1,14 +1,13 @@
 
 package br.com.mercadolivre.desafioquality.services;
 
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
-import br.com.mercadolivre.desafioquality.exceptions.NullIdException;
-import br.com.mercadolivre.desafioquality.exceptions.PropertyNotFoundException;
+import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 
+import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
+import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,17 @@ public class PropertyService {
 
     // São declarados no contexto de classe, pois assim quem se encarrega de instânciar é o Spring
     private final ApplicationRepository<Neighborhood, UUID> neighborhoodRepository;
+    private final NeighborhoodValidationService neighborhoodValidationService;
     //
+
+    public Property addProperty(Property propertyToAdd)
+            throws DbEntryAlreadyExists, DatabaseManagementException, DatabaseWriteException, DatabaseReadException, NeighborhoodNotFoundException {
+
+        neighborhoodValidationService.validate(propertyToAdd.getPropDistrict());
+
+        propertyToAdd.setId(UUID.randomUUID());
+        return propertyRepository.add(propertyToAdd);
+    }
 
     public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
         if(propertyId == null) {
@@ -81,5 +90,9 @@ public class PropertyService {
         RoomService roomService = new RoomService();
 
         return roomService.calcArea(property.getPropRooms());
+    }
+
+    public Property find(UUID id) throws DatabaseReadException, DatabaseManagementException {
+        return propertyRepository.find(id).orElse(new Property());
     }
 }
