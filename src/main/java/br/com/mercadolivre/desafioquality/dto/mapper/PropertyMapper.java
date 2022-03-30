@@ -27,4 +27,21 @@ public class PropertyMapper {
 
         return response;
     }
+
+    public static PropertyValueDTO toPropertyResponseArea(Property property, Double totalArea) {
+
+        PropertyValueDTO response = new PropertyValueDTO();
+
+        response.setPropName(property.getPropName());
+        response.setPropDistrict(property.getPropDistrict());
+        response.setPropValue(property.getPropValue());
+        response.setNumberOfRooms(property.getPropRooms().size());
+
+        if (totalArea != null) {
+            response.setTotalArea(totalArea);
+        }
+
+        return response;
+    }
+
 }
