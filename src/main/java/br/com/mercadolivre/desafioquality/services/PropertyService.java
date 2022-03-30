@@ -1,14 +1,12 @@
 
 package br.com.mercadolivre.desafioquality.services;
 
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
-import br.com.mercadolivre.desafioquality.exceptions.NullIdException;
-import br.com.mercadolivre.desafioquality.exceptions.PropertyNotFoundException;
+import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 
+import br.com.mercadolivre.desafioquality.services.exceptions.NeighborhoodNotFoundException;
 import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,8 +27,13 @@ public class PropertyService {
     private final NeighborhoodValidationService neighborhoodValidationService;
     //
 
-    public Property addProperty(Property propertyToAdd) {
+    public Property addProperty(Property propertyToAdd)
+            throws DbEntryAlreadyExists, DatabaseManagementException, DatabaseWriteException, DatabaseReadException, NeighborhoodNotFoundException {
 
+        neighborhoodValidationService.validate(propertyToAdd.getPropDistrict());
+
+        propertyToAdd.setId(UUID.randomUUID());
+        return propertyRepository.add(propertyToAdd);
     }
 
     public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
