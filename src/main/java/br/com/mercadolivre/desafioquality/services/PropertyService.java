@@ -1,3 +1,4 @@
+
 package br.com.mercadolivre.desafioquality.services;
 
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
@@ -26,7 +27,7 @@ public class PropertyService {
     private final ApplicationRepository<Neighborhood, UUID> neighborhoodRepository;
     //
 
-    public BigDecimal calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
+    public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
         if(propertyId == null) {
             throw new NullIdException("O id é nulo!");
         }
@@ -49,7 +50,17 @@ public class PropertyService {
 
         Double propertyArea = calcPropertyArea(requestedProperty);
 
-        return requestedPropertyNeighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
+        // TODO: Verificar se é a melhor maneira... após obter o calculo do preço já setar na propia propiedade
+        BigDecimal propertyFinalPrice = requestedPropertyNeighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
+
+        //seta o valor da propiedade requisitada no seter de valor
+        requestedProperty.setPropValue(propertyFinalPrice);
+
+        return requestedProperty;
+    }
+
+    public Property findByID(UUID propertyId) {
+        return null;
     }
 
     public Double calcPropertyArea(Property property){
