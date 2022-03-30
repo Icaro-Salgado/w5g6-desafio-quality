@@ -1,10 +1,12 @@
 package br.com.mercadolivre.defafioquality.service;
 
+import br.com.mercadolivre.defafioquality.exceptions.DatabaseManagementException;
 import br.com.mercadolivre.defafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.defafioquality.exceptions.NullIdException;
 import br.com.mercadolivre.defafioquality.exceptions.PropertyNotFoundException;
 import br.com.mercadolivre.defafioquality.models.Property;
 import br.com.mercadolivre.defafioquality.models.Room;
+import br.com.mercadolivre.defafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.defafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.defafioquality.services.PropertyService;
 import org.junit.jupiter.api.AfterEach;
@@ -20,14 +22,17 @@ import java.util.UUID;
 
 public class PropertyServiceTests {
 
-    private PropertyRepository propertyRepository;
     private PropertyService propertyService;
 
+    // property service requirements
+    private PropertyRepository propertyRepository;
+    private NeighborhoodRepository neighborhoodRepository;
 
     @BeforeEach
     public void setUp() {
         this.propertyRepository = Mockito.mock(PropertyRepository.class);
-        this.propertyService = new PropertyService(propertyRepository);
+        this.neighborhoodRepository = Mockito.mock(NeighborhoodRepository.class);
+        this.propertyService = new PropertyService(propertyRepository, neighborhoodRepository);
     }
 
     @AfterEach
@@ -36,7 +41,7 @@ public class PropertyServiceTests {
     }
 
     @Test
-    public void testIfPropertyPriceIsCorrect() throws DatabaseReadException {
+    public void testIfPropertyPriceIsCorrect() throws DatabaseReadException, DatabaseManagementException {
         // SETUP
         BigDecimal expected = BigDecimal.valueOf(32);
 
