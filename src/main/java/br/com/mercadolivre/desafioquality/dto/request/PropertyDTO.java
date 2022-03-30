@@ -1,4 +1,4 @@
-package br.com.mercadolivre.defafioquality.dto.request;
+package br.com.mercadolivre.desafioquality.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

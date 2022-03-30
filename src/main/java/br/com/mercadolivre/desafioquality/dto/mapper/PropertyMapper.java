@@ -1,8 +1,8 @@
-package br.com.mercadolivre.defafioquality.dto.mapper;
+package br.com.mercadolivre.desafioquality.dto.mapper;
 
-import br.com.mercadolivre.defafioquality.dto.request.PropertyDTO;
-import br.com.mercadolivre.defafioquality.dto.response.PropertyValueDTO;
-import br.com.mercadolivre.defafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
+import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
+import br.com.mercadolivre.desafioquality.models.Property;
 
 
 public class PropertyMapper {

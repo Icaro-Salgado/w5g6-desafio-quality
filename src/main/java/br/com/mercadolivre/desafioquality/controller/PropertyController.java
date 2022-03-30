@@ -1,11 +1,11 @@
-package br.com.mercadolivre.defafioquality.controller;
+package br.com.mercadolivre.desafioquality.controller;
 
-import br.com.mercadolivre.defafioquality.dto.mapper.PropertyMapper;
-import br.com.mercadolivre.defafioquality.dto.response.PropertyValueDTO;
-import br.com.mercadolivre.defafioquality.exceptions.DatabaseManagementException;
-import br.com.mercadolivre.defafioquality.exceptions.DatabaseReadException;
-import br.com.mercadolivre.defafioquality.models.Property;
-import br.com.mercadolivre.defafioquality.services.PropertyService;
+import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
+import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
+import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
+import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
+import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.services.PropertyService;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
