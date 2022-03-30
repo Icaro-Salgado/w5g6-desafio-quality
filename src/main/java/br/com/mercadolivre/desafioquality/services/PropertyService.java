@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafioquality.services;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.exceptions.NullIdException;
+import br.com.mercadolivre.desafioquality.exceptions.PropertyNotFoundException;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
@@ -10,7 +11,6 @@ import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.el.PropertyNotFoundException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
