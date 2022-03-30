@@ -45,21 +45,25 @@ public class PropertyServiceTests {
     @Test
     public void testIfPropertyPriceIsCorrect() throws DatabaseReadException, DatabaseManagementException {
         // SETUP
-        BigDecimal expected = BigDecimal.valueOf(3200);
+        BigDecimal expected = BigDecimal.valueOf(3200.0);
+
+        /// Setting up fake neighborhood
+        Neighborhood fakeNeighborhood = new Neighborhood();
+        fakeNeighborhood.setValueDistrictM2(BigDecimal.valueOf(100));
+
+        String fakeNeighborhoodName = "Fake neighborhood";
+        fakeNeighborhood.setNameDistrict(fakeNeighborhoodName);
 
         /// Setting up fake property
         List<Room> fakeRooms = List.of(new Room("Room fake", 8.0, 4.0));
 
         Property fakeProperty = new Property();
         fakeProperty.setPropRooms(fakeRooms);
+        fakeProperty.setPropDistrict(fakeNeighborhoodName);
 
+        /// Teaching Mockito
         Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(java.util.Optional.of(fakeProperty));
-
-        /// Setting up fake neighborhood
-        Neighborhood fakeNeighborhood = new Neighborhood();
-        fakeNeighborhood.setValueDistrictM2(BigDecimal.valueOf(100));
-
-        Mockito.when(this.neighborhoodRepository.find(Mockito.any())).thenReturn(java.util.Optional.of(fakeNeighborhood));
+        Mockito.when(this.neighborhoodRepository.read()).thenReturn(List.of(fakeNeighborhood));
 
         // ACT
         BigDecimal real = this.propertyService.calcPropertyPrice(UUID.randomUUID());

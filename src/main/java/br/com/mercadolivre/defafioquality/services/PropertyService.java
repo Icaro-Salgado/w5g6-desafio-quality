@@ -49,7 +49,7 @@ public class PropertyService {
 
         // Como o método que calcula a área da propriedade não esta pronto vou
         // colocar um hard input qualquer para a área da propriedade
-        Double propertyArea = 4.0;
+        Double propertyArea = 32.0;
 
         return requestedPropertyNeighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
     }
