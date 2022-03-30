@@ -3,8 +3,10 @@ package br.com.mercadolivre.defafioquality.service;
 import br.com.mercadolivre.defafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.defafioquality.exceptions.NullIdException;
 import br.com.mercadolivre.defafioquality.exceptions.PropertyNotFoundException;
+import br.com.mercadolivre.defafioquality.models.Neighborhood;
 import br.com.mercadolivre.defafioquality.models.Property;
 import br.com.mercadolivre.defafioquality.models.Room;
+import br.com.mercadolivre.defafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.defafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.defafioquality.services.PropertyService;
 import org.junit.jupiter.api.AfterEach;
@@ -22,11 +24,14 @@ public class PropertyServiceTests {
 
     private PropertyRepository propertyRepository;
     private PropertyService propertyService;
+    private NeighborhoodRepository neighborhoodRepository;
 
 
     @BeforeEach
     public void setUp() {
         this.propertyRepository = Mockito.mock(PropertyRepository.class);
+        this.neighborhoodRepository = Mockito.mock(NeighborhoodRepository.class);
+
         this.propertyService = new PropertyService(propertyRepository);
     }
 
@@ -38,14 +43,21 @@ public class PropertyServiceTests {
     @Test
     public void testIfPropertyPriceIsCorrect() throws DatabaseReadException {
         // SETUP
-        BigDecimal expected = BigDecimal.valueOf(32);
+        BigDecimal expected = BigDecimal.valueOf(3200);
 
+        /// Setting up fake property
         List<Room> fakeRooms = List.of(new Room("Room fake", 8.0, 4.0));
 
         Property fakeProperty = new Property();
         fakeProperty.setPropRooms(fakeRooms);
 
         Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(java.util.Optional.of(fakeProperty));
+
+        /// Setting up fake neighborhood
+        Neighborhood fakeNeighborhood = new Neighborhood();
+        fakeNeighborhood.setValueDistrictM2(BigDecimal.valueOf(100));
+
+        Mockito.when(this.neighborhoodRepository.find(Mockito.any())).thenReturn(java.util.Optional.of(fakeNeighborhood));
 
         // ACT
         BigDecimal real = this.propertyService.calcPropertyPrice(UUID.randomUUID());
