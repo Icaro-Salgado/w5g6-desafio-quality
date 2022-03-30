@@ -11,6 +11,7 @@ import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
 
+import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
 import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -30,12 +31,15 @@ public class PropertyServiceTests {
 
     // property service requirements
     private PropertyRepository propertyRepository;
+    private NeighborhoodValidationService neighborhoodValidationService;
 
     @BeforeEach
     public void setUp() {
         this.propertyRepository = Mockito.mock(PropertyRepository.class);
         this.neighborhoodRepository = Mockito.mock(NeighborhoodRepository.class);
-        this.propertyService = new PropertyService(propertyRepository, neighborhoodRepository);
+        this.neighborhoodValidationService = Mockito.mock(NeighborhoodValidationService.class);
+
+        this.propertyService = new PropertyService(propertyRepository, neighborhoodRepository, neighborhoodValidationService);
 
     }
 
