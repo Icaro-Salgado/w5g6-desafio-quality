@@ -8,6 +8,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RoomService {
 
     public Double calcArea(Room room) {
+        if(room == null){
+            return 0.0;
+        }
+
         room.setRoomTotalArea(room.getRoomWidth() * room.getRoomLength());
 
         return room.getRoomTotalArea();

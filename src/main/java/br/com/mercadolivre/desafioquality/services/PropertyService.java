@@ -47,10 +47,18 @@ public class PropertyService {
                 .filter(n -> n.getNameDistrict().equals(requestedProperty.getPropDistrict()))
                 .findFirst().get();
 
-        // Como o método que calcula a área da propriedade não esta pronto vou
-        // colocar um hard input qualquer para a área da propriedade
-        Double propertyArea = 32.0;
+        Double propertyArea = calcPropertyArea(requestedProperty);
 
         return requestedPropertyNeighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
+    }
+
+    public Double calcPropertyArea(Property property){
+        if(property == null) {
+            return 0.0;
+        }
+
+        RoomService roomService = new RoomService();
+
+        return roomService.calcArea(property.getPropRooms());
     }
 }

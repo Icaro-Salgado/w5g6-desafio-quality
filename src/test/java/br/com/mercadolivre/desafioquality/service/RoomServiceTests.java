@@ -42,4 +42,13 @@ public class RoomServiceTests {
         assertEquals(expected, areaTotal);
     }
 
+    @Test
+    public void testIfReturnErrorWhenReceiveNullValue(){
+        expected = 0.0;
+        Double roomArea = roomService.calcArea((Room) null);
+
+        assertEquals(expected, roomArea);
+
+    }
+
 }

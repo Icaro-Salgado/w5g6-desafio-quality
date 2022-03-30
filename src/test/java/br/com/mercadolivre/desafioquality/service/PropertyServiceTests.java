@@ -11,6 +11,7 @@ import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
 
+import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,12 +56,8 @@ public class PropertyServiceTests {
         String fakeNeighborhoodName = "Fake neighborhood";
         fakeNeighborhood.setNameDistrict(fakeNeighborhoodName);
 
-        /// Setting up fake property
-        List<Room> fakeRooms = List.of(new Room("Room fake", 8.0, 4.0));
 
-        Property fakeProperty = new Property();
-        fakeProperty.setPropRooms(fakeRooms);
-        fakeProperty.setPropDistrict(fakeNeighborhoodName);
+        Property fakeProperty = PropertyUtils.buildMockProperty();
 
         /// Teaching Mockito
         Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(java.util.Optional.of(fakeProperty));
@@ -92,5 +89,25 @@ public class PropertyServiceTests {
 
         // ASSERT
         Assertions.assertTrue(thrown.getMessage().equals("Propriedade não encontrada"));
+    }
+
+    @Test
+    public void testIfPropertyAreaIsCorrect(){
+        Double expected = (8.0 * 4.0) + (4.0 * 3.0);
+
+        Property fakeProperty = PropertyUtils.buildMockProperty();
+
+        Double propertyArea = propertyService.calcPropertyArea(fakeProperty);
+
+        Assertions.assertEquals(expected, propertyArea);
+    }
+
+    @Test
+    public void testIfReturnZeroWhenReceiveNullValue(){
+        Double expected = 0.0;
+
+        Double propertyArea = propertyService.calcPropertyArea(null);
+
+        Assertions.assertEquals(expected, propertyArea);
     }
 }
