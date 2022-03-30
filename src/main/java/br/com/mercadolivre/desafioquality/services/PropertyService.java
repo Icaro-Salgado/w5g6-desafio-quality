@@ -59,10 +59,6 @@ public class PropertyService {
         return requestedProperty;
     }
 
-    public Property findByID(UUID propertyId) {
-        return null;
-    }
-
     public Double calcPropertyArea(Property property){
         if(property == null) {
             return 0.0;
