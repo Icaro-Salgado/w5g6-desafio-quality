@@ -6,14 +6,18 @@ import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
+import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
+import br.com.mercadolivre.desafioquality.exceptions.DbEntryAlreadyExists;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
+import br.com.mercadolivre.desafioquality.services.exceptions.NeighborhoodNotFoundException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -35,8 +39,14 @@ public class PropertyController {
 
     @PostMapping
     public ResponseEntity<PropertyCreatedDTO> createProperty(
-            @RequestBody PropertyDTO propertyToAdd
-    ) {
-        return null;
+            @RequestBody @Valid PropertyDTO propertyToAddDTO
+    ) throws DatabaseManagementException, DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException, NeighborhoodNotFoundException {
+
+        Property propertyToAdd = propertyToAddDTO.toModel();
+
+        Property addedProperty = propertyService.addProperty(propertyToAdd);
+
+        // TODO: Retornar a URI do objeto, só depende de ter um método para localizar uma propriedade por ID
+        return ResponseEntity.status(HttpStatus.CREATED).body(PropertyCreatedDTO.fromModel(addedProperty));
     }
 }
