@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -92,7 +93,12 @@ public class PropertyService {
         return roomService.calcArea(property.getPropRooms());
     }
 
+
     public Property find(UUID id) throws DatabaseReadException, DatabaseManagementException {
         return propertyRepository.find(id).orElse(new Property());
+    }
+
+    public List<Property> ListProperties() throws DatabaseReadException, DatabaseManagementException {
+        return propertyRepository.read();
     }
 }

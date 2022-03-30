@@ -1,8 +1,7 @@
-package br.com.mercadolivre.desafioquality.models;
+package br.com.mercadolivre.desafioquality.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import br.com.mercadolivre.desafioquality.models.Room;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,14 +11,12 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
-public class Property {
+public class PropertyResponseDTO {
 
     private UUID id;
     private String propName;
     private String propDistrict;
     private List<Room> propRooms;
     private BigDecimal propValue;
-
 }

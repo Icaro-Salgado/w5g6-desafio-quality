@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafioquality.controller;
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
 import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyCreatedDTO;
+import br.com.mercadolivre.desafioquality.dto.response.PropertyResponseDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
 import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Property;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -28,15 +30,26 @@ public class PropertyController {
 
     final private PropertyService propertyService;
 
+    @GetMapping("/")
+    public ResponseEntity<List<PropertyResponseDTO>> requestPropertyList() throws DatabaseReadException, DatabaseManagementException {
+        List<Property> properties = propertyService.ListProperties();
+
+        List<PropertyResponseDTO> response = PropertyMapper.toPropertyResponse(properties);
+
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/property-value/{propertyId}")
     public ResponseEntity<PropertyValueDTO> requestPropertyValue(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
 
         Property property = propertyService.calcPropertyPrice(propertyId);
 
-        PropertyValueDTO propertyResponse = PropertyMapper.toPropertyResponse(property);
+        PropertyValueDTO propertyResponse = PropertyMapper.toPropertyValueResponse(property);
 
         return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
     }
+
   
     @PostMapping
     public ResponseEntity<PropertyCreatedDTO> createProperty(
@@ -69,7 +82,8 @@ public class PropertyController {
                 .build();
 
         return ResponseEntity.ok(foundedPropertyDTO);
-      
+    }
+
     @GetMapping("/property-area/{propertyId}")
     public ResponseEntity<PropertyValueDTO> requestPropertyArea(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
 
@@ -81,4 +95,5 @@ public class PropertyController {
 
         return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
     }
+
 }
