@@ -9,6 +9,7 @@ import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 
+import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,11 @@ public class PropertyService {
 
     // São declarados no contexto de classe, pois assim quem se encarrega de instânciar é o Spring
     private final ApplicationRepository<Neighborhood, UUID> neighborhoodRepository;
+    private final NeighborhoodValidationService neighborhoodValidationService;
     //
 
     public Property addProperty(Property propertyToAdd) {
-        return null;
+
     }
 
     public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
