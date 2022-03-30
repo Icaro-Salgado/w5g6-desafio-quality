@@ -7,7 +7,6 @@ import br.com.mercadolivre.defafioquality.exceptions.PropertyNotFoundException;
 import br.com.mercadolivre.defafioquality.models.Neighborhood;
 import br.com.mercadolivre.defafioquality.models.Property;
 import br.com.mercadolivre.defafioquality.repository.ApplicationRepository;
-import br.com.mercadolivre.defafioquality.repository.NeighborhoodRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +25,7 @@ public class PropertyService {
     private final ApplicationRepository<Neighborhood, UUID> neighborhoodRepository;
     //
 
-    public BigDecimal calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
+    public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
         if(propertyId == null) {
             throw new NullIdException("O id é nulo!");
         }
@@ -51,6 +50,16 @@ public class PropertyService {
         // colocar um hard input qualquer para a área da propriedade
         Double propertyArea = 32.0;
 
-        return requestedPropertyNeighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
+        // TODO: Verificar se é a melhor maneira... após obter o calculo do preço já setar na propia propiedade
+        BigDecimal propertyFinalPrice = requestedPropertyNeighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
+
+        //seta o valor da propiedade requisitada no seter de valor
+        requestedProperty.setPropValue(propertyFinalPrice);
+
+        return requestedProperty;
+    }
+
+    public Property findByID(UUID propertyId) {
+        return null;
     }
 }

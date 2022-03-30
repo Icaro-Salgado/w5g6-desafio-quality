@@ -66,7 +66,7 @@ public class PropertyServiceTests {
         Mockito.when(this.neighborhoodRepository.read()).thenReturn(List.of(fakeNeighborhood));
 
         // ACT
-        BigDecimal real = this.propertyService.calcPropertyPrice(UUID.randomUUID());
+        BigDecimal real = this.propertyService.calcPropertyPrice(UUID.randomUUID()).getPropValue();
 
         // ASSERT
         Assertions.assertEquals(expected, real);

@@ -1,6 +1,9 @@
-package br.com.mercadolivre.defafioquality.dto;
+package br.com.mercadolivre.defafioquality.dto.request;
 
+import br.com.mercadolivre.defafioquality.models.Property;
 import br.com.mercadolivre.defafioquality.models.Room;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +12,8 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
+@Data
+@AllArgsConstructor
 public class PropertyDTO {
     private UUID id;
 
@@ -21,8 +26,6 @@ public class PropertyDTO {
     @Size(max = 45,message = "O comprimento do bairro não pode exceder 45 caracteres!\n")
     private String propDistrict;
 
-
     private List<@Valid Room> propRooms;
-
 
 }

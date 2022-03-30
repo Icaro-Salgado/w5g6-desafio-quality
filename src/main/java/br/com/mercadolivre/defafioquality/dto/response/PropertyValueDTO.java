@@ -1,22 +1,18 @@
-package br.com.mercadolivre.defafioquality.models;
-
+package br.com.mercadolivre.defafioquality.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.UUID;
+
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Property {
+@NoArgsConstructor
+public class PropertyValueDTO {
 
-    private UUID id;
     private String propName;
     private String propDistrict;
-    private List<Room> propRooms;
     private BigDecimal propValue;
 
 }
