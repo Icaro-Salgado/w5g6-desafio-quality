@@ -30,7 +30,7 @@ public class PropertyService {
     public Property addProperty(Property propertyToAdd)
             throws DbEntryAlreadyExists, DatabaseManagementException, DatabaseWriteException, DatabaseReadException, NeighborhoodNotFoundException {
 
-//        neighborhoodValidationService.validate(propertyToAdd.getPropDistrict());
+        neighborhoodValidationService.validate(propertyToAdd.getPropDistrict());
 
         propertyToAdd.setId(UUID.randomUUID());
         return propertyRepository.add(propertyToAdd);
