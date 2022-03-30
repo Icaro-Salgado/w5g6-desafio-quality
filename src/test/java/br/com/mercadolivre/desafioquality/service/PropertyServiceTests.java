@@ -47,7 +47,7 @@ public class PropertyServiceTests {
     @Test
     public void testIfPropertyPriceIsCorrect() throws DatabaseReadException, DatabaseManagementException {
         // SETUP
-        BigDecimal expected = BigDecimal.valueOf(3200.0);
+        BigDecimal expected = new BigDecimal("19035.00");
 
         /// Setting up fake neighborhood
         Neighborhood fakeNeighborhood = new Neighborhood();
@@ -93,7 +93,7 @@ public class PropertyServiceTests {
 
     @Test
     public void testIfPropertyAreaIsCorrect(){
-        Double expected = (8.0 * 4.0) + (4.0 * 3.0);
+        Double expected = 190.35;
 
         Property fakeProperty = PropertyUtils.buildMockProperty();
 
