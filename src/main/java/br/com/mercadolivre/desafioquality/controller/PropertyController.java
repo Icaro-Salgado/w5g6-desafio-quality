@@ -11,8 +11,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.UUID;
 
 @RestController
@@ -34,15 +36,20 @@ public class PropertyController {
 
     @PostMapping
     public ResponseEntity<PropertyCreatedDTO> createProperty(
-            @RequestBody @Valid PropertyDTO propertyToAddDTO
+            @RequestBody @Valid PropertyDTO propertyToAddDTO,
+            UriComponentsBuilder uriBuilder
     ) throws DatabaseManagementException, DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException, NeighborhoodNotFoundException {
 
         Property propertyToAdd = propertyToAddDTO.toModel();
 
         Property addedProperty = propertyService.addProperty(propertyToAdd);
 
-        // TODO: Retornar a URI do objeto, só depende de ter um método para localizar uma propriedade por ID
-        return ResponseEntity.status(HttpStatus.CREATED).body(PropertyCreatedDTO.fromModel(addedProperty));
+        URI uri = uriBuilder
+                .path("/{id}")
+                .buildAndExpand(addedProperty.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(PropertyCreatedDTO.fromModel(addedProperty));
     }
 
     @GetMapping("/{id}")
