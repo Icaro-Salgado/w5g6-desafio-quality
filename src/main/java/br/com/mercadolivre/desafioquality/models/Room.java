@@ -1,10 +1,12 @@
 package br.com.mercadolivre.desafioquality.models;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 public class Room {
 
     private UUID id;

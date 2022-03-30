@@ -1,0 +1,31 @@
+[
+  {
+    "id": "77b3737d-7450-4d94-8f95-936e2c17e2cc",
+    "propName": "Fake name",
+    "propDistrict": "Fake neighborhood",
+    "propRooms": [
+      {
+        "id": null,
+        "roomName": "Bedroom",
+        "roomWidth": 12.0,
+        "roomLength": 10.0,
+        "roomTotalArea": null
+      },
+      {
+        "id": null,
+        "roomName": "Dinner room",
+        "roomWidth": 6.5,
+        "roomLength": 8.4,
+        "roomTotalArea": null
+      },
+      {
+        "id": null,
+        "roomName": "Bathroom",
+        "roomWidth": 3.5,
+        "roomLength": 4.5,
+        "roomTotalArea": null
+      }
+    ],
+    "propValue": null
+  }
+]

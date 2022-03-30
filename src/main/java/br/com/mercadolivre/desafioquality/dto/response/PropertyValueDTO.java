@@ -14,5 +14,7 @@ public class PropertyValueDTO {
     private String propName;
     private String propDistrict;
     private BigDecimal propValue;
+    private Double totalArea;
+    private Integer numberOfRooms;
 
 }
