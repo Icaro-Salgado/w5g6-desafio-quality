@@ -8,7 +8,11 @@ import java.util.concurrent.atomic.AtomicReference;
 public class RoomService {
 
     public Double calcArea(Room room) {
-        if(room == null){
+        if(room == null || room.getRoomWidth() == null || room.getRoomLength() == null){
+            return 0.0;
+        }
+
+        if(room.getRoomWidth() < 0 || room.getRoomLength() < 0){
             return 0.0;
         }
 
@@ -19,10 +23,14 @@ public class RoomService {
 
     public Double calcArea(List<Room> rooms) {
         AtomicReference<Double> totalArea = new AtomicReference<>(0.0);
-        rooms.forEach(r -> {
-            r.setRoomTotalArea(calcArea(r));
-            totalArea.updateAndGet(v -> v + r.getRoomTotalArea());
-        });
+        for (Room room: rooms) {
+            room.setRoomTotalArea(calcArea(room));
+            if (room.getRoomTotalArea() == 0.0) {
+                totalArea.set(0.0);
+                break;
+            }
+            totalArea.updateAndGet(v -> v + room.getRoomTotalArea());
+        }
 
         return totalArea.get();
     }
