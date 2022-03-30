@@ -1,7 +1,7 @@
 package br.com.mercadolivre.desafioquality.controller;
 
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
-import br.com.mercadolivre.desafioquality.dto.request.PropertyCreatedDTO;
+import br.com.mercadolivre.desafioquality.dto.response.PropertyCreatedDTO;
 import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;

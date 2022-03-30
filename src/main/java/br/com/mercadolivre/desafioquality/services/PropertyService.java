@@ -27,6 +27,10 @@ public class PropertyService {
     private final ApplicationRepository<Neighborhood, UUID> neighborhoodRepository;
     //
 
+    public Property addProperty(Property propertyToAdd) {
+        return null;
+    }
+
     public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
         if(propertyId == null) {
             throw new NullIdException("O id é nulo!");
