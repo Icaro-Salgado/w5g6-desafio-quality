@@ -6,7 +6,7 @@ import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 
-import br.com.mercadolivre.desafioquality.services.exceptions.NeighborhoodNotFoundException;
+import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
 import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -76,5 +76,9 @@ public class PropertyService {
         RoomService roomService = new RoomService();
 
         return roomService.calcArea(property.getPropRooms());
+    }
+
+    public Property find(UUID id) throws DatabaseReadException, DatabaseManagementException {
+        return propertyRepository.find(id).orElse(new Property());
     }
 }

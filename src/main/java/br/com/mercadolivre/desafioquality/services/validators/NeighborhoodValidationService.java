@@ -4,7 +4,7 @@ import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
-import br.com.mercadolivre.desafioquality.services.exceptions.NeighborhoodNotFoundException;
+import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package br.com.mercadolivre.desafioquality.services.exceptions;
+package br.com.mercadolivre.desafioquality.exceptions;
 
 public class NeighborhoodNotFoundException extends RuntimeException {
     public NeighborhoodNotFoundException(String msg) {

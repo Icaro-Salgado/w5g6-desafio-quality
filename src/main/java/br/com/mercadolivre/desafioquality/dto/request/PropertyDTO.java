@@ -2,6 +2,7 @@ package br.com.mercadolivre.desafioquality.dto.request;
 
 import br.com.mercadolivre.desafioquality.models.Property;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import br.com.mercadolivre.desafioquality.models.Room;
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class PropertyDTO {
     private UUID id;
 

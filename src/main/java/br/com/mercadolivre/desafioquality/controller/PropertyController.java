@@ -1,18 +1,13 @@
 package br.com.mercadolivre.desafioquality.controller;
 
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
-import br.com.mercadolivre.desafioquality.dto.response.PropertyCreatedDTO;
 import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
+import br.com.mercadolivre.desafioquality.dto.response.PropertyCreatedDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
-import br.com.mercadolivre.desafioquality.exceptions.DbEntryAlreadyExists;
+import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
-import br.com.mercadolivre.desafioquality.services.exceptions.NeighborhoodNotFoundException;
 import lombok.AllArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +43,20 @@ public class PropertyController {
 
         // TODO: Retornar a URI do objeto, só depende de ter um método para localizar uma propriedade por ID
         return ResponseEntity.status(HttpStatus.CREATED).body(PropertyCreatedDTO.fromModel(addedProperty));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PropertyDTO> findPropertyByID(@PathVariable UUID id) throws DatabaseReadException, DatabaseManagementException {
+        Property foundedProperty = propertyService.find(id);
+
+        PropertyDTO foundedPropertyDTO = PropertyDTO
+                .builder()
+                .id(foundedProperty.getId())
+                .propName(foundedProperty.getPropName())
+                .propDistrict(foundedProperty.getPropDistrict())
+                .propRooms(foundedProperty.getPropRooms())
+                .build();
+
+        return ResponseEntity.ok(foundedPropertyDTO);
     }
 }
