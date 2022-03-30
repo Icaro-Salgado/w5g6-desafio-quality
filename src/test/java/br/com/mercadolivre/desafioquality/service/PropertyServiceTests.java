@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafioquality.service;
 import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
@@ -15,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -140,5 +142,35 @@ public class PropertyServiceTests {
         Assertions.assertTrue(
                 Stream.of(emptyProperty.getPropDistrict(), emptyProperty.getPropName())
                         .allMatch(Objects::isNull));
+    }
+    public void testIfListOfPropertyShoudBeEmptyList() throws DatabaseReadException, DatabaseManagementException {
+        //SETUP
+        Mockito.when(this.propertyRepository.read()).thenReturn(new ArrayList<>());
+
+        //ACT
+        List<Property> properties = propertyService.ListProperties();
+
+        //ASSERT
+        Assertions.assertTrue(properties.isEmpty());
+    }
+
+    @Test
+    public void testIfListOfPropertyShoudBeAPropertyList() throws DatabaseReadException, DatabaseManagementException {
+        //SETUP
+        List<Property> propertiesFake = List.of(
+                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35)),
+                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35)),
+                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35)),
+                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35))
+        );
+
+        Mockito.when(this.propertyRepository.read()).thenReturn(propertiesFake);
+
+        //ACT
+        List<Property> propertiesFinded = propertyService.ListProperties();
+
+        //ASSERT
+        Assertions.assertEquals(propertiesFake,propertiesFinded);
+
     }
 }
