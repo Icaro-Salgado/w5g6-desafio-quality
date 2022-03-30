@@ -68,6 +68,20 @@ public class PropertyService {
         return requestedProperty;
     }
 
+    public Property findProperty(UUID propertyId) throws PropertyNotFoundException, DatabaseReadException, DatabaseManagementException {
+        if(propertyId == null) {
+            throw new NullIdException("O id é nulo!");
+        }
+
+        Optional<Property> response = propertyRepository.find(propertyId);
+
+        if(response.isEmpty()) {
+            throw new PropertyNotFoundException("Propriedade não encontrada");
+        }
+
+        return response.get();
+    }
+
     public Double calcPropertyArea(Property property){
         if(property == null) {
             return 0.0;

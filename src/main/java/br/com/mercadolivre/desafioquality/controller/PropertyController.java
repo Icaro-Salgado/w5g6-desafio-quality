@@ -12,6 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -33,7 +37,7 @@ public class PropertyController {
 
         return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
     }
-
+  
     @PostMapping
     public ResponseEntity<PropertyCreatedDTO> createProperty(
             @RequestBody @Valid PropertyDTO propertyToAddDTO,
@@ -65,5 +69,16 @@ public class PropertyController {
                 .build();
 
         return ResponseEntity.ok(foundedPropertyDTO);
+      
+    @GetMapping("/property-area/{propertyId}")
+    public ResponseEntity<PropertyValueDTO> requestPropertyArea(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
+
+        Property property = propertyService.findProperty(propertyId);
+
+        Double totalArea = propertyService.calcPropertyArea(property);
+
+        PropertyValueDTO propertyResponse = PropertyMapper.toPropertyResponseArea(property, totalArea);
+
+        return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
     }
 }
