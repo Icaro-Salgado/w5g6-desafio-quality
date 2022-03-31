@@ -52,7 +52,11 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
     }
 
     @Override
-    public Integer update(Map<String, Object> filters, Map<String, Object> values) {
-        return 0;
+    public Integer update(Map<String, Object> filters, Map<String, Object> values) { return 0; }
+
+    public void delete(Neighborhood neighborhood) throws DatabaseReadException, DatabaseWriteException {
+        List<Neighborhood> neighborhoods = read();
+        neighborhoods = neighborhoods.stream().filter(n -> !n.equals(neighborhood)).collect(Collectors.toList());
+        fileManager.writeIntoFile(filename, neighborhoods);
     }
 }
