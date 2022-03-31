@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafioquality.controller;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
+import br.com.mercadolivre.desafioquality.utils.DatabaseUtils;
 import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
@@ -32,12 +33,7 @@ public class PropertyControllerTests {
 
     @AfterAll
     public static void afterAll(){
-        String pathDatabase = "src/test/java/br/com/mercadolivre/desafioquality/database/";
-
-        File directory = new File(pathDatabase);
-        for(File file: Objects.requireNonNull(directory.listFiles()))
-            if (!file.isDirectory())
-                file.delete();
+        DatabaseUtils.resetDatabase();
     }
 
     @Test
