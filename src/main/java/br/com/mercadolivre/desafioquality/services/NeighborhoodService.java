@@ -9,6 +9,7 @@ import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,6 +20,20 @@ public class NeighborhoodService {
     private NeighborhoodRepository neighborhoodRepository;
 
     public Neighborhood createNeighborhood(Neighborhood newNeighborhood) throws DbEntryAlreadyExists, DatabaseWriteException, DatabaseReadException {
+
+        List<Neighborhood> neighborhoods = neighborhoodRepository.read();
+
+        Optional<Neighborhood> existingNeighborhood = neighborhoods
+                .stream()
+                .filter(neighborhood -> neighborhood.getNameDistrict().equals(newNeighborhood.getNameDistrict()))
+                .findFirst();
+
+        if (existingNeighborhood.isPresent()) {
+            throw new DbEntryAlreadyExists(newNeighborhood
+                    .getNameDistrict()
+                    .concat(" já está cadastrado na base de dados")
+            );
+        }
 
         newNeighborhood.setId(UUID.randomUUID());
         return neighborhoodRepository.add(newNeighborhood);

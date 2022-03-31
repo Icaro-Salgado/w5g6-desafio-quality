@@ -31,6 +31,7 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
 
     @Override
     public Optional<Neighborhood> find(UUID id) throws DatabaseReadException {
+
         Neighborhood[] neighborhoods = fileManager.readFromFile(filename, Neighborhood[].class);
 
         return Arrays.stream(neighborhoods).filter(c -> c.getId().equals(id)).findFirst();
@@ -40,17 +41,6 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
     public Neighborhood add(Neighborhood neighborhoodToAdd) throws DatabaseWriteException, DatabaseReadException, DbEntryAlreadyExists {
         List<Neighborhood> neighborhoods = read();
 
-        Optional<Neighborhood> existingNeighborhood = neighborhoods
-                .stream()
-                .filter(neighborhood -> neighborhood.getNameDistrict().equals(neighborhoodToAdd.getNameDistrict()))
-                .findFirst();
-
-        if (existingNeighborhood.isPresent()) {
-            throw new DbEntryAlreadyExists(neighborhoodToAdd
-                    .getNameDistrict()
-                    .concat(" já está cadastrado na base de dados")
-            );
-        }
 
         neighborhoodToAdd.setId(UUID.randomUUID());
         neighborhoods.add(neighborhoodToAdd);
