@@ -6,10 +6,12 @@ import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundExcepti
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Service
 @AllArgsConstructor
 public class NeighborhoodService {
 
