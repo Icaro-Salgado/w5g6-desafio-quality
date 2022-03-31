@@ -52,16 +52,22 @@ public class PropertyService {
 
         List<Neighborhood> neighborhoodList = neighborhoodRepository.read();
 
-        // TODO: Verificar com o pessoal de cadastro de propriedade se posso usar o get direto ou devo checar primeiro se achou
-        Neighborhood requestedPropertyNeighborhood = neighborhoodList
+        Optional<Neighborhood> requestedPropertyNeighborhood = neighborhoodList
                 .stream()
                 .filter(n -> n.getNameDistrict().equals(requestedProperty.getPropDistrict()))
-                .findFirst().get();
+                .findFirst();
+
+        Neighborhood neighborhood;
+        if (requestedPropertyNeighborhood.isEmpty()) {
+            throw new NeighborhoodNotFoundException("Bairro não encontrado");
+        }
+
+        neighborhood = requestedPropertyNeighborhood.get();
 
         Double propertyArea = calcPropertyArea(requestedProperty);
 
         // TODO: Verificar se é a melhor maneira... após obter o calculo do preço já setar na propia propiedade
-        BigDecimal propertyFinalPrice = requestedPropertyNeighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
+        BigDecimal propertyFinalPrice = neighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
 
         //seta o valor da propiedade requisitada no seter de valor
         requestedProperty.setPropValue(propertyFinalPrice);
