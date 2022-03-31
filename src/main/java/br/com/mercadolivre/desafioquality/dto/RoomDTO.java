@@ -1,6 +1,7 @@
 package br.com.mercadolivre.desafioquality.dto;
 
 import br.com.mercadolivre.desafioquality.models.Room;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class RoomDTO {
     private UUID id;
 
@@ -21,7 +23,6 @@ public class RoomDTO {
     @Size(max = 30,message = "O comprimento do cômodo não pode exceder 30 caracteres.")
     @Pattern(regexp = "^\\b[A-Z].*\\b", message = "O nome do comodo deve começar com uma letra maiúscula!")
     private String roomName;
-
 
     @NotEmpty(message = "A largura do cômodo não pode estar vazia. \n")
     @DecimalMax(value = "25",message = "A largura máxima permitida por cômodo é de 25 metros.")
@@ -42,5 +43,15 @@ public class RoomDTO {
                     .roomLength(room.getRoomLength())
                     .build();
         }).collect(Collectors.toList());
+    }
+
+    public static RoomDTO fromModel(Room room) {
+        RoomDTO response = new RoomDTO(
+                room.getId(),
+                room.getRoomName(),
+                room.getRoomWidth(),
+                room.getRoomLength()
+        );
+        return response;
     }
 }

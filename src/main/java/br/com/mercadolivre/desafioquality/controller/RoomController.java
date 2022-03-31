@@ -30,10 +30,11 @@ public class RoomController {
     final private RoomService roomService;
 
     @GetMapping("biggest-room/{propertyId}")
-    public ResponseEntity<Room> findBiggestRoom(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
+    public ResponseEntity<RoomDTO> findBiggestRoom(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
         Property property = propertyService.findProperty(propertyId);
         List<Room> rooms = property.getPropRooms();
         Room biggest = roomService.getBiggestRoom(rooms);
-        return ResponseEntity.status(HttpStatus.OK).body(biggest);
+        RoomDTO response = RoomDTO.fromModel(biggest);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
