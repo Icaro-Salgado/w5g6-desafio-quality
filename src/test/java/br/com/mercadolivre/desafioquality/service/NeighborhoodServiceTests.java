@@ -60,4 +60,41 @@ public class NeighborhoodServiceTests {
         NeighborhoodService neighborhoodServiceMock = Mockito.mock(NeighborhoodService.class);
         Mockito.when(neighborhoodServiceMock.getNeighborhoodById(randomUUID)).thenReturn(neighborhood);
     }
+
+//    @Test
+//    @DisplayName("Given a valid neighborhood, when call createNeighborhood, then return ")
+//    public void testIfNeighborhoodIsCreated() throws DatabaseManagementException, DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException {
+//
+//        Neighborhood neighborhoodOne = Neighborhood
+//                .builder()
+//                .nameDistrict("Vila Maria")
+//                .valueDistrictM2(BigDecimal.valueOf(10000.0))
+//                .build();
+//
+//        Mockito.when(this.repository.add(any())).thenReturn(neighborhoodOne);
+//
+//        Neighborhood testResult = this.service.createNeighborhood(neighborhoodOne);
+//
+//        assertNotNull(testResult);
+//    }
+//
+//    @Test
+//    @DisplayName("Given a duplicated neighborhood, when call createNeighborhood, the trhows an DbEntryAlreadyExists")
+//    public void testIfThrowsErrorWhenNeighborhoodAlreadyRegistred() throws DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException, DatabaseManagementException {
+//
+//        Neighborhood neighborhoodOne = Neighborhood
+//                .builder()
+//                .nameDistrict("Vila Maria")
+//                .valueDistrictM2(BigDecimal.valueOf(10000.0))
+//                .build();
+//
+//        List<Neighborhood> neighborhoods = new ArrayList<>();
+//        neighborhoods.add(Neighborhood.builder().nameDistrict("Vila Maria").build());
+//
+//        Neighborhood nei = this.service.createNeighborhood(neighborhoodOne);
+//
+//        Throwable exception = assertThrows(DbEntryAlreadyExists.class, ()->this.service.createNeighborhood(neighborhoodOne));
+//                this.service.createNeighborhood(neighborhoodOne);
+//
+//    }
 }
