@@ -11,7 +11,6 @@ import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValida
 import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
-import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ public class PropertyServiceTests {
         Mockito.when(this.neighborhoodRepository.read()).thenReturn(List.of(fakeNeighborhood));
 
         // ACT
-        BigDecimal real = this.propertyService.calcPropertyPrice(UUID.randomUUID()).getPropValue();
+        BigDecimal real = this.propertyService.getPropertyPrice(UUID.randomUUID());
 
         // ASSERT
         Assertions.assertEquals(expected, real);
@@ -76,7 +75,7 @@ public class PropertyServiceTests {
     @Test
     @DisplayName("Given an id as null, when call calcPropertyPrice, then throw an error containing \"O id é nulo!\"")
     public void testIfIdReceivedIsANullValue() {
-        Exception thrown = Assertions.assertThrows(NullIdException.class, () -> this.propertyService.calcPropertyPrice(null));
+        Exception thrown = Assertions.assertThrows(NullIdException.class, () -> this.propertyService.getPropertyPrice(null));
 
         Assertions.assertEquals("O id é nulo!", thrown.getMessage());
     }
@@ -89,7 +88,7 @@ public class PropertyServiceTests {
 
         // ACT
         Exception thrown = Assertions.assertThrows(
-                PropertyNotFoundException.class, () -> this.propertyService.calcPropertyPrice(UUID.randomUUID())
+                PropertyNotFoundException.class, () -> this.propertyService.getPropertyPrice(UUID.randomUUID())
         );
 
         // ASSERT
@@ -139,7 +138,7 @@ public class PropertyServiceTests {
         Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(Optional.empty());
 
         // ACT
-        Property emptyProperty = this.propertyService.find(UUID.randomUUID());
+        Property emptyProperty = this.propertyService.findProperty(UUID.randomUUID());
 
         // ASSERT
         Assertions.assertTrue(

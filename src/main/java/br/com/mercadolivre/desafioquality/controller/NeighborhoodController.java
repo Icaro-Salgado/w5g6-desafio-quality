@@ -5,6 +5,7 @@ import br.com.mercadolivre.desafioquality.dto.response.NeighborhoodListItemDTO;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
+import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
 import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/neighborhood")
@@ -21,6 +23,7 @@ import java.util.List;
 public class NeighborhoodController {
 
     private final NeighborhoodService neighborhoodService;
+
 
     @PostMapping("/")
     public ResponseEntity<List<Object>> postNeighborhood() throws DatabaseReadException, DatabaseManagementException {
@@ -55,14 +58,13 @@ public class NeighborhoodController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Object>> requestNeighborhoodById() throws DatabaseReadException, DatabaseManagementException {
-
-        return ResponseEntity.ok(new ArrayList<>());
+    public ResponseEntity<Neighborhood> requestNeighborhoodById(@PathVariable UUID id) throws DatabaseReadException {
+        return ResponseEntity.ok(neighborhoodService.getNeighborhoodById(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<List<Object>> deleteNeighborhoodById() throws DatabaseReadException, DatabaseManagementException {
-
-        return ResponseEntity.ok(new ArrayList<>());
+    public ResponseEntity<Void> deleteNeighborhoodById(@PathVariable UUID id) throws DatabaseReadException, DatabaseWriteException {
+        neighborhoodService.deleteNeighborhoodById(id);
+        return ResponseEntity.noContent().build();
     }
 }

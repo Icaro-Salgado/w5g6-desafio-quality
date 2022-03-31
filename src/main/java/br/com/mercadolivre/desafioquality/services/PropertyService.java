@@ -4,6 +4,7 @@ package br.com.mercadolivre.desafioquality.services;
 import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 
 import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
@@ -12,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,48 +31,43 @@ public class PropertyService {
     public Property addProperty(Property propertyToAdd)
             throws DbEntryAlreadyExists, DatabaseManagementException, DatabaseWriteException, DatabaseReadException, NeighborhoodNotFoundException {
 
+        // Validations, por enquanto só temos a validação caso o bairro exista
         neighborhoodValidationService.validate(propertyToAdd.getPropDistrict());
 
-        propertyToAdd.setId(UUID.randomUUID());
+        // Entity builder, ele seta coisas que serão persistidas
+        this.makePropertyEntity(propertyToAdd);
+
+        // Se ele não conseguir adicionar a property ele vai jogar um erro para ser tratado no Advice do controller
         return propertyRepository.add(propertyToAdd);
     }
 
-    public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
-        if(propertyId == null) {
-            throw new NullIdException("O id é nulo!");
-        }
+    private void makePropertyEntity(Property property) throws DatabaseReadException, DatabaseManagementException {
+        // Propriedade
+        property.setId(UUID.randomUUID());
+        property.setPropArea(this.calcPropertyArea(property));
 
-        Optional<Property> response = propertyRepository.find(propertyId);
+        // Quartos
+        property.getPropRooms().forEach(r -> r.setId(UUID.randomUUID()));
+    }
 
-        if(response.isEmpty()) {
-            throw new PropertyNotFoundException("Propriedade não encontrada");
-        }
-
-        Property requestedProperty = response.get();
-
+    private BigDecimal calcPropertyPrice(Property property) throws DatabaseReadException, DatabaseManagementException {
         List<Neighborhood> neighborhoodList = neighborhoodRepository.read();
 
-        Optional<Neighborhood> requestedPropertyNeighborhood = neighborhoodList
+        Optional<Neighborhood> propertyNeighborhood = neighborhoodList
                 .stream()
-                .filter(n -> n.getNameDistrict().equals(requestedProperty.getPropDistrict()))
+                .filter(n -> n.getNameDistrict().equals(property.getPropDistrict()))
                 .findFirst();
 
-        Neighborhood neighborhood;
-        if (requestedPropertyNeighborhood.isEmpty()) {
+        if (propertyNeighborhood.isEmpty()) {
             throw new NeighborhoodNotFoundException("Bairro não encontrado");
         }
+        Neighborhood neighborhood = propertyNeighborhood.get();
 
-        neighborhood = requestedPropertyNeighborhood.get();
+        return neighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(this.calcPropertyArea(property)));
+    }
 
-        Double propertyArea = calcPropertyArea(requestedProperty);
-
-        // TODO: Verificar se é a melhor maneira... após obter o calculo do preço já setar na propia propiedade
-        BigDecimal propertyFinalPrice = neighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
-
-        //seta o valor da propiedade requisitada no seter de valor
-        requestedProperty.setPropValue(propertyFinalPrice);
-
-        return requestedProperty;
+    public BigDecimal getPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
+       return this.findProperty(propertyId).getPropValue();
     }
 
     public Property findProperty(UUID propertyId) throws PropertyNotFoundException, DatabaseReadException, DatabaseManagementException {
@@ -85,6 +80,8 @@ public class PropertyService {
         if(response.isEmpty()) {
             throw new PropertyNotFoundException("Propriedade não encontrada");
         }
+        Property property = response.get();
+        property.setPropValue(this.calcPropertyPrice(property));
 
         return response.get();
     }
@@ -99,12 +96,14 @@ public class PropertyService {
         return roomService.calcArea(property.getPropRooms());
     }
 
-
-    public Property find(UUID id) throws DatabaseReadException, DatabaseManagementException {
-        return propertyRepository.find(id).orElse(new Property());
-    }
-
     public List<Property> ListProperties() throws DatabaseReadException, DatabaseManagementException {
-        return propertyRepository.read();
+        List<Property> properties = propertyRepository.read();
+
+        for (Property property :
+                properties) {
+            property.setPropValue(this.calcPropertyPrice(property));
+        }
+
+        return properties;
     }
 }

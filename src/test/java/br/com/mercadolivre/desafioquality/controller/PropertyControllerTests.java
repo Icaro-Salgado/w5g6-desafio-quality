@@ -33,7 +33,7 @@ public class PropertyControllerTests {
 
     @AfterAll
     public void afterAll(){
-        databaseUtils.resetDatabase();
+        databaseUtils.deleteDatabase();
     }
 
     @Test
