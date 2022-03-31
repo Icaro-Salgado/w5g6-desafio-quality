@@ -34,7 +34,7 @@ public class NeighborhoodServiceTests {
         Neighborhood neighborhood = new Neighborhood();
         UUID randomUUID = UUID.randomUUID();
         neighborhood.setId(randomUUID);
-        Mockito.when(neighborhoodRepository.find(any())).thenReturn(Optional.of(neighborhood));
+        Mockito.when(neighborhoodRepository.find(Mockito.any())).thenReturn(Optional.of(neighborhood));
 
         Neighborhood foundNeighborhood = neighborhoodService.getNeighborhoodById(randomUUID);
 
