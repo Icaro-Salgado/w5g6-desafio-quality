@@ -1,6 +1,7 @@
 package br.com.mercadolivre.desafioquality.controller;
 
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
+import br.com.mercadolivre.desafioquality.dto.request.CreatePropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyCreatedDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyResponseDTO;
@@ -43,7 +44,7 @@ public class PropertyController {
     @GetMapping("/property-value/{propertyId}")
     public ResponseEntity<PropertyValueDTO> requestPropertyValue(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
 
-        Property property = propertyService.calcPropertyPrice(propertyId);
+        Property property = propertyService.getPropertyPrice(propertyId);
 
         PropertyValueDTO propertyResponse = PropertyMapper.toPropertyValueResponse(property);
 
@@ -52,8 +53,8 @@ public class PropertyController {
 
   
     @PostMapping
-    public ResponseEntity<PropertyCreatedDTO> createProperty(
-            @RequestBody @Valid PropertyDTO propertyToAddDTO,
+    public ResponseEntity createProperty(
+            @RequestBody @Valid CreatePropertyDTO propertyToAddDTO,
             UriComponentsBuilder uriBuilder
     ) throws DatabaseManagementException, DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException, NeighborhoodNotFoundException {
 
@@ -66,7 +67,7 @@ public class PropertyController {
                 .buildAndExpand(addedProperty.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(PropertyCreatedDTO.fromModel(addedProperty));
+        return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/{id}")

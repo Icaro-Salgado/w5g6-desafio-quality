@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -31,13 +30,39 @@ public class PropertyService {
     public Property addProperty(Property propertyToAdd)
             throws DbEntryAlreadyExists, DatabaseManagementException, DatabaseWriteException, DatabaseReadException, NeighborhoodNotFoundException {
 
+        // Validations, por enquanto só temos a validação caso o bairro exista
         neighborhoodValidationService.validate(propertyToAdd.getPropDistrict());
 
-        propertyToAdd.setId(UUID.randomUUID());
+        // Entity builder, ele seta coisas que serão persistidas
+        this.makePropertyEntity(propertyToAdd);
+
+        // Se ele não conseguir adicionar a property ele vai jogar um erro para ser tratado no Advice do controller
         return propertyRepository.add(propertyToAdd);
     }
 
-    public Property calcPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
+    private void makePropertyEntity(Property property) throws DatabaseReadException, DatabaseManagementException {
+        property.setId(UUID.randomUUID());
+        property.setPropArea(this.calcPropertyArea(property));
+        property.setPropValue(this.calcPropertyPrice(property));
+    }
+
+    private BigDecimal calcPropertyPrice(Property property) throws DatabaseReadException, DatabaseManagementException {
+        List<Neighborhood> neighborhoodList = neighborhoodRepository.read();
+
+        Optional<Neighborhood> propertyNeighborhood = neighborhoodList
+                .stream()
+                .filter(n -> n.getNameDistrict().equals(property.getPropDistrict()))
+                .findFirst();
+
+        if (propertyNeighborhood.isEmpty()) {
+            throw new NeighborhoodNotFoundException("Bairro não encontrado");
+        }
+        Neighborhood neighborhood = propertyNeighborhood.get();
+
+        return neighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(this.calcPropertyArea(property)));
+    }
+
+    public Property getPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
         if(propertyId == null) {
             throw new NullIdException("O id é nulo!");
         }
@@ -62,15 +87,7 @@ public class PropertyService {
             throw new NeighborhoodNotFoundException("Bairro não encontrado");
         }
 
-        neighborhood = requestedPropertyNeighborhood.get();
-
-        Double propertyArea = calcPropertyArea(requestedProperty);
-
-        // TODO: Verificar se é a melhor maneira... após obter o calculo do preço já setar na propia propiedade
-        BigDecimal propertyFinalPrice = neighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(propertyArea));
-
-        //seta o valor da propiedade requisitada no seter de valor
-        requestedProperty.setPropValue(propertyFinalPrice);
+        requestedProperty.setPropValue(this.calcPropertyPrice(requestedProperty));
 
         return requestedProperty;
     }

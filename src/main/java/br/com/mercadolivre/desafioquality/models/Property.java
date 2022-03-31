@@ -23,4 +23,12 @@ public class Property {
     private BigDecimal propValue;
     private Double propArea;
     private UUID largestRoomId;
+
+    public Property(UUID id, String propName, String propDistrict, List<Room> propRooms, BigDecimal propValue) {
+        this.id = id;
+        this.propName = propName;
+        this.propDistrict = propDistrict;
+        this.propRooms = propRooms;
+        this.propValue = propValue;
+    }
 }
