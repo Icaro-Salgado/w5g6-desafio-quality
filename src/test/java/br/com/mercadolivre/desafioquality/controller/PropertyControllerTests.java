@@ -4,6 +4,7 @@ import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,6 +16,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.io.File;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,6 +28,17 @@ public class PropertyControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+
+    @AfterAll
+    public static void afterAll(){
+        String pathDatabase = "src/test/java/br/com/mercadolivre/desafioquality/database/";
+
+        File directory = new File(pathDatabase);
+        for(File file: Objects.requireNonNull(directory.listFiles()))
+            if (!file.isDirectory())
+                file.delete();
+    }
 
     @Test
     @DisplayName("PropertyController - GET - /api/v1/property/property-area/{propertyId}")
