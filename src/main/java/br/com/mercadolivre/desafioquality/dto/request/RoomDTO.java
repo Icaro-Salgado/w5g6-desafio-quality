@@ -1,4 +1,4 @@
-package br.com.mercadolivre.desafioquality.dto;
+package br.com.mercadolivre.desafioquality.dto.request;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotEmpty;
