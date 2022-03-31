@@ -30,27 +30,6 @@ public class PropertyController {
 
     final private PropertyService propertyService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<PropertyResponseDTO>> requestPropertyList() throws DatabaseReadException, DatabaseManagementException {
-        List<Property> properties = propertyService.ListProperties();
-
-        List<PropertyResponseDTO> response = PropertyMapper.toPropertyResponse(properties);
-
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/property-value/{propertyId}")
-    public ResponseEntity<PropertyValueDTO> requestPropertyValue(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
-
-        Property property = propertyService.calcPropertyPrice(propertyId);
-
-        PropertyValueDTO propertyResponse = PropertyMapper.toPropertyValueResponse(property);
-
-        return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
-    }
-
-  
     @PostMapping
     public ResponseEntity<PropertyCreatedDTO> createProperty(
             @RequestBody @Valid createPropertyDTO propertyToAddDTO,
@@ -69,6 +48,16 @@ public class PropertyController {
         return ResponseEntity.created(uri).body(PropertyCreatedDTO.fromModel(addedProperty));
     }
 
+    @GetMapping("/")
+    public ResponseEntity<List<PropertyResponseDTO>> requestPropertyList() throws DatabaseReadException, DatabaseManagementException {
+        List<Property> properties = propertyService.ListProperties();
+
+        List<PropertyResponseDTO> response = PropertyMapper.toPropertyResponse(properties);
+
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<createPropertyDTO> findPropertyByID(@PathVariable UUID id) throws DatabaseReadException, DatabaseManagementException {
         Property foundedProperty = propertyService.find(id);
@@ -82,6 +71,16 @@ public class PropertyController {
                 .build();
 
         return ResponseEntity.ok(foundedCreatePropertyDTO);
+    }
+
+    @GetMapping("/property-value/{propertyId}")
+    public ResponseEntity<PropertyValueDTO> requestPropertyValue(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
+
+        Property property = propertyService.calcPropertyPrice(propertyId);
+
+        PropertyValueDTO propertyResponse = PropertyMapper.toPropertyValueResponse(property);
+
+        return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
     }
 
     @GetMapping("/property-area/{propertyId}")

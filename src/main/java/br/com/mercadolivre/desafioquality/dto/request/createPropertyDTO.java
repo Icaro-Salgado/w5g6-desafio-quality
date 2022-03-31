@@ -11,6 +11,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -26,13 +27,13 @@ public class createPropertyDTO {
     @Size(max = 45,message = "O comprimento do bairro não pode exceder 45 caracteres!\n")
     private String propDistrict;
 
-    private List<@Valid Room> propRooms;
+    private List<@Valid createRoomDTO> propRooms;
 
     public Property toModel() {
         return Property.builder()
                 .propName(this.propName)
                 .propDistrict(this.propDistrict)
-                .propRooms(this.propRooms)
+                .propRooms(this.propRooms.stream().map(createRoomDTO::toModel).collect(Collectors.toList()))
                 .build();
     }
 

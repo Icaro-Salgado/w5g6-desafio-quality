@@ -1,5 +1,7 @@
 package br.com.mercadolivre.desafioquality.dto.request;
 
+import br.com.mercadolivre.desafioquality.models.Room;
+
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -21,4 +23,13 @@ public class createRoomDTO {
     @NotEmpty(message = "O comprimento do cômodo não pode estar vazio. \n")
     @DecimalMax(value = "33",message = "O comprimento máximo permitido por cômodo é de 33 metros.")
     private Double roomLength;
+
+    public Room toModel() {
+        return Room
+                .builder()
+                .roomName(this.roomName)
+                .roomWidth(this.roomWidth)
+                .roomLength(this.roomWidth)
+                .build();
+    }
 }
