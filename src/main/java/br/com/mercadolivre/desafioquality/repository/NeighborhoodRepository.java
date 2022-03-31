@@ -31,7 +31,6 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
 
     @Override
     public Optional<Neighborhood> find(UUID id) throws DatabaseReadException {
-
         Neighborhood[] neighborhoods = fileManager.readFromFile(filename, Neighborhood[].class);
 
         return Arrays.stream(neighborhoods).filter(c -> c.getId().equals(id)).findFirst();

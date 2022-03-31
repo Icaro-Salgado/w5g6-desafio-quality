@@ -42,6 +42,17 @@ public class NeighborhoodServiceTests {
     }
 
     @Test
+    @DisplayName("Given an UUID from a non existing neighborhood, when call find method, then throw an error containing \"Bairro não encontrado\"")
+    public void testFindNonExistingNeighborhoodFromRandomUUID() {
+        Exception thrown = Assertions.assertThrows(
+                NeighborhoodNotFoundException.class,
+                () -> neighborhoodService.getNeighborhoodById(UUID.fromString("2999537f-11dc-40c1-a834-7249f2a361dd"))
+        );
+
+        Assertions.assertEquals("Bairro não encontrado", thrown.getMessage());
+    }
+
+    @Test
     @DisplayName("Given an neighborhood id, when call delete method, then getNeighborhoodById must be called once")
     public void testDeleteMethodWasCalled() throws DatabaseReadException, DatabaseWriteException {
         Neighborhood neighborhood = new Neighborhood();
