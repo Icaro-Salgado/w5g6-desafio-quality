@@ -9,11 +9,9 @@ import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
 import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
 import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
+import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -49,6 +47,7 @@ public class PropertyServiceTests {
     }
 
     @Test
+    @DisplayName("Given a Property with valid data, when call calcPropertyPrice, then return the total price based on neighborhood and area")
     public void testIfPropertyPriceIsCorrect() throws DatabaseReadException, DatabaseManagementException {
         // SETUP
         BigDecimal expected = new BigDecimal("19035.00");
@@ -75,13 +74,15 @@ public class PropertyServiceTests {
     }
 
     @Test
-    public void testIfIdRecivedIsANullValue() {
+    @DisplayName("Given an id as null, when call calcPropertyPrice, then throw an error containing \"O id é nulo!\"")
+    public void testIfIdReceivedIsANullValue() {
         Exception thrown = Assertions.assertThrows(NullIdException.class, () -> this.propertyService.calcPropertyPrice(null));
 
-        Assertions.assertTrue(thrown.getMessage().equals("O id é nulo!"));
+        Assertions.assertEquals("O id é nulo!", thrown.getMessage());
     }
 
     @Test
+    @DisplayName("Given a empty property, when call calcPropertyArea, then throw an error containing \"Propriedade não encontrada\"")
     public void testIfRequestedPropertyNotFound() throws DatabaseReadException {
         // SETUP
         Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(java.util.Optional.empty());
@@ -92,30 +93,31 @@ public class PropertyServiceTests {
         );
 
         // ASSERT
-        Assertions.assertTrue(thrown.getMessage().equals("Propriedade não encontrada"));
+        Assertions.assertEquals("Propriedade não encontrada", thrown.getMessage());
     }
 
     @Test
+    @DisplayName("Given a property containing valid rooms, when call calcPropertyArea, then return the sum of the area of all rooms")
     public void testIfPropertyAreaIsCorrect() {
         Double expected = 190.35;
-
         Property fakeProperty = PropertyUtils.buildMockProperty();
-
         Double propertyArea = propertyService.calcPropertyArea(fakeProperty);
 
         Assertions.assertEquals(expected, propertyArea);
     }
 
     @Test
+    @DisplayName("Given a property as null, when call calcPropertyArea, then throw an error containing \"Propriedade não encontrada\"")
     public void testIfReturnZeroWhenReceiveNullValue() {
-        Double expected = 0.0;
+        Exception thrown = Assertions.assertThrows(
+                PropertyNotFoundException.class, () -> this.propertyService.calcPropertyArea(null)
+        );
 
-        Double propertyArea = propertyService.calcPropertyArea(null);
-
-        Assertions.assertEquals(expected, propertyArea);
+        Assertions.assertEquals("Propriedade não encontrada", thrown.getMessage());
     }
 
     @Test
+    @DisplayName("Given a property to be created, when call addProperty, then return an not null id")
     public void testIfCreatedPropertyReceivesAnId() throws DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException, DatabaseManagementException {
 
         // SETUP
@@ -131,6 +133,7 @@ public class PropertyServiceTests {
     }
 
     @Test
+    @DisplayName("Given a scenario that a property is not found, when call find method, then return an empty Property")
     public void testIfOnNotFoundPropertyIdOnDbItReturnsANewEmptyProperty() throws DatabaseReadException, DatabaseManagementException {
         // SETUP
         Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(Optional.empty());
@@ -143,18 +146,9 @@ public class PropertyServiceTests {
                 Stream.of(emptyProperty.getPropDistrict(), emptyProperty.getPropName())
                         .allMatch(Objects::isNull));
     }
-    public void testIfListOfPropertyShoudBeEmptyList() throws DatabaseReadException, DatabaseManagementException {
-        //SETUP
-        Mockito.when(this.propertyRepository.read()).thenReturn(new ArrayList<>());
-
-        //ACT
-        List<Property> properties = propertyService.ListProperties();
-
-        //ASSERT
-        Assertions.assertTrue(properties.isEmpty());
-    }
 
     @Test
+    @DisplayName("Given a storage containing four valid properties, when call listProperties, then return all these properties")
     public void testIfListOfPropertyShoudBeAPropertyList() throws DatabaseReadException, DatabaseManagementException {
         //SETUP
         List<Property> propertiesFake = List.of(

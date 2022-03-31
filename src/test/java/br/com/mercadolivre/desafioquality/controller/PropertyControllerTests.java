@@ -4,15 +4,14 @@ import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -24,22 +23,14 @@ import java.util.UUID;
 @ActiveProfiles(profiles = "test")
 public class PropertyControllerTests {
 
-    @Value("${path.database.file}")
-    private String pathDatabase;
-
-    @Value("${path.database.default.file}")
-    private String pathDefaultDatabases;
-
     @Autowired
     private MockMvc mockMvc;
 
     @Test
+    @DisplayName("PropertyController - GET - /api/v1/property/property-area/{propertyId}")
     public void testCalculatePropertyArea() throws Exception {
-
-        Property propertyTest = PropertyUtils.buildMockProperty();
-
+        PropertyUtils.buildMockProperty();
         ApplicationRepository<Property, UUID> mockPropertyRepo = Mockito.mock(PropertyRepository.class);
-
         Mockito.when(mockPropertyRepo.find(Mockito.any())).thenReturn(Optional.empty());
 
         mockMvc.perform(MockMvcRequestBuilders.

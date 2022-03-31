@@ -83,9 +83,9 @@ public class PropertyService {
         return response.get();
     }
 
-    public Double calcPropertyArea(Property property){
+    public Double calcPropertyArea(Property property) throws PropertyNotFoundException {
         if(property == null) {
-            return 0.0;
+            throw new PropertyNotFoundException("Propriedade não encontrada");
         }
 
         RoomService roomService = new RoomService();

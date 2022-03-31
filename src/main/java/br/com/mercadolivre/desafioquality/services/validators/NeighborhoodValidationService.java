@@ -16,11 +16,11 @@ import java.util.UUID;
 public class NeighborhoodValidationService {
     private final ApplicationRepository<Neighborhood, UUID> neighborhoodRepository;
 
-    public void validate(String neighborhoodName) throws DatabaseReadException, DatabaseManagementException, NeighborhoodNotFoundException {
-       this.validateExistence(neighborhoodName);
+    public boolean validate(String neighborhoodName) throws DatabaseReadException, DatabaseManagementException, NeighborhoodNotFoundException {
+       return this.validateExistence(neighborhoodName);
     }
 
-    private void validateExistence(String neighborhoodName) throws DatabaseReadException, DatabaseManagementException, NeighborhoodNotFoundException {
+    private boolean validateExistence(String neighborhoodName) throws DatabaseReadException, DatabaseManagementException, NeighborhoodNotFoundException {
         Optional<Neighborhood> foundedNeighborhood = neighborhoodRepository
                 .read()
                 .stream()
@@ -30,5 +30,7 @@ public class NeighborhoodValidationService {
         if(foundedNeighborhood.isEmpty()) {
             throw new NeighborhoodNotFoundException("Bairro não encontrado");
         }
+
+        return true;
     }
 }
