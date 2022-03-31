@@ -1,17 +1,20 @@
 package br.com.mercadolivre.desafioquality.controller;
 
-import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
-import br.com.mercadolivre.desafioquality.dto.response.PropertyResponseDTO;
+import br.com.mercadolivre.desafioquality.dto.NeighborhoodDTO;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
+import br.com.mercadolivre.desafioquality.exceptions.DbEntryAlreadyExists;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -24,9 +27,22 @@ public class NeighborhoodController {
     private NeighborhoodService neighborhoodService;
 
     @PostMapping("/")
-    public ResponseEntity<List<Object>> postNeighborhood() throws DatabaseReadException, DatabaseManagementException {
+    public ResponseEntity<Neighborhood> postNeighborhood(
+            @RequestBody @Valid NeighborhoodDTO newNeighborhoodDTO,
+            UriComponentsBuilder uriBuilder
+    ) throws DatabaseReadException, DatabaseManagementException, DbEntryAlreadyExists, DatabaseWriteException {
 
-        return ResponseEntity.ok(new ArrayList<>());
+
+        Neighborhood newNeighborhood = newNeighborhoodDTO.toModel();
+
+        Neighborhood addedNeighborhood = neighborhoodService.createNeighborhood(newNeighborhood);
+
+        URI uri = uriBuilder
+                .path("api/v1/neighborhood/{id}")
+                .buildAndExpand(addedNeighborhood.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 
     @GetMapping("/")
