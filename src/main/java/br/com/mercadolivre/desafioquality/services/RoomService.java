@@ -41,7 +41,6 @@ public class RoomService {
     public Room getBiggestRoom(List<Room> rooms) {
         double biggestRoom = 0d;
         Room retriveRoom = new Room();
-        calcArea(rooms);
         for (Room r:rooms) {
             if (r.getRoomTotalArea() > biggestRoom) {
                 biggestRoom = r.getRoomTotalArea();
