@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -17,6 +18,9 @@ public class DatabaseUtils<T> {
 
     @Value("${path.database.file}")
     private String pathDatabase;
+
+    @Value("${path.database.default.file}")
+    private String pathDefaultDatabases;
 
     private File dbFile = null;
 
@@ -50,6 +54,19 @@ public class DatabaseUtils<T> {
                 file.delete();
             }
         }
+    }
+
+    public void loadDefaultFiles(String filename){
+        File defaultDBFile = new File(pathDefaultDatabases.concat(filename).replace(".json", "").concat("_default.json"));
+
+        File dbFile = new File(pathDatabase.concat(filename));
+
+        try {
+            Files.copy(defaultDBFile.toPath(), dbFile.toPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }
