@@ -21,5 +21,6 @@ public class Property {
     private String propDistrict;
     private List<Room> propRooms;
     private BigDecimal propValue;
-
+    private Double propArea;
+    private UUID largestRoomId;
 }
