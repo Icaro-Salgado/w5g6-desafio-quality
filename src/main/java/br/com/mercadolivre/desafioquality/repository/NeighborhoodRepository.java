@@ -40,8 +40,16 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
     public Neighborhood add(Neighborhood neighborhoodToAdd) throws DatabaseWriteException, DatabaseReadException, DbEntryAlreadyExists {
         List<Neighborhood> neighborhoods = read();
 
-        if (neighborhoods.contains(neighborhoodToAdd)) {
-            throw new DbEntryAlreadyExists(neighborhoodToAdd.getNameDistrict().concat(" já está cadastrado na base de dados"));
+        Optional<Neighborhood> existingNeighborhood = neighborhoods
+                .stream()
+                .filter(neighborhood -> neighborhood.getNameDistrict().equals(neighborhoodToAdd.getNameDistrict()))
+                .findFirst();
+
+        if (existingNeighborhood.isPresent()) {
+            throw new DbEntryAlreadyExists(neighborhoodToAdd
+                    .getNameDistrict()
+                    .concat(" já está cadastrado na base de dados")
+            );
         }
 
         neighborhoodToAdd.setId(UUID.randomUUID());
