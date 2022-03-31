@@ -3,12 +3,15 @@ package br.com.mercadolivre.desafioquality.controller;
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
 import br.com.mercadolivre.desafioquality.dto.request.CreatePropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
+import br.com.mercadolivre.desafioquality.dto.response.PropertyDetailDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyListDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyResponseDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
 import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
+import br.com.mercadolivre.desafioquality.services.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 import java.util.UUID;
@@ -43,13 +47,10 @@ public class PropertyController {
     }
 
     @GetMapping("/property-value/{propertyId}")
-    public ResponseEntity<PropertyValueDTO> requestPropertyValue(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
+    public ResponseEntity<BigDecimal> requestPropertyValue(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
+        BigDecimal propertyPrice = propertyService.getPropertyPrice(propertyId);
 
-        Property property = propertyService.getPropertyPrice(propertyId);
-
-        PropertyValueDTO propertyResponse = PropertyMapper.toPropertyValueResponse(property);
-
-        return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
+        return ResponseEntity.ok(propertyPrice);
     }
 
   
@@ -72,18 +73,11 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PropertyDTO> findPropertyByID(@PathVariable UUID id) throws DatabaseReadException, DatabaseManagementException {
-        Property foundedProperty = propertyService.find(id);
+    public ResponseEntity<PropertyDetailDTO> findPropertyByID(@PathVariable UUID id) throws DatabaseReadException, DatabaseManagementException {
+        Property foundedProperty = propertyService.findProperty(id);
+        Room foundedPropertyRoom = new Room(); // TODO: encontrar o maior quarto da propriedade
 
-        PropertyDTO foundedPropertyDTO = PropertyDTO
-                .builder()
-                .id(foundedProperty.getId())
-                .propName(foundedProperty.getPropName())
-                .propDistrict(foundedProperty.getPropDistrict())
-                .propRooms(foundedProperty.getPropRooms())
-                .build();
-
-        return ResponseEntity.ok(foundedPropertyDTO);
+        return ResponseEntity.ok(PropertyMapper.toPropertyDetailResponse(foundedProperty, foundedPropertyRoom));
     }
 
     @GetMapping("/property-area/{propertyId}")
