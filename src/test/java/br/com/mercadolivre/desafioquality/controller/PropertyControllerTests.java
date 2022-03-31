@@ -5,9 +5,7 @@ import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.utils.DatabaseUtils;
 import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,23 +15,25 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.io.File;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ActiveProfiles(profiles = "test")
 public class PropertyControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private DatabaseUtils databaseUtils;
+
 
     @AfterAll
-    public static void afterAll(){
-        DatabaseUtils.resetDatabase();
+    public void afterAll(){
+        databaseUtils.resetDatabase();
     }
 
     @Test

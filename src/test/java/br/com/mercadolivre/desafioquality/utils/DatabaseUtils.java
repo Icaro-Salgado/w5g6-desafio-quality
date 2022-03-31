@@ -1,13 +1,22 @@
 package br.com.mercadolivre.desafioquality.utils;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.util.Objects;
 
+@Component
 public class DatabaseUtils {
 
-    public static void resetDatabase(){
-        String pathDatabase = "src/test/java/br/com/mercadolivre/desafioquality/database/";
+    @Value("${path.database.file}")
+    private String pathDatabase;
 
+    public String getPathDatabase() {
+        return pathDatabase;
+    }
+
+    public void resetDatabase(){
         File directory = new File(pathDatabase);
         for(File file: Objects.requireNonNull(directory.listFiles())){
             if (!file.isDirectory()){
