@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,6 +88,18 @@ public class RoomServiceTests {
         Double areaTotal = roomService.calcArea(rooms);
 
         assertEquals(expected, areaTotal);
+    }
+
+    @Test
+    public void testIfBiggestRoomIsCorrect() {
+        Room bedroom = new Room("quarto", 12.0, 10.0);
+        Room livingRoom = new Room("sala", 2.0, 8.40);
+        Room kitchen = new Room("cozinha", 3.50, 4.5);
+        List<Room> rooms = List.of(bedroom, livingRoom, kitchen);
+
+        Room biggestRoom = roomService.getBiggestRoom(rooms);
+
+        assertEquals(bedroom, biggestRoom);
     }
 
 }

@@ -3,6 +3,7 @@ package br.com.mercadolivre.desafioquality.services;
 import br.com.mercadolivre.desafioquality.models.Room;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -41,6 +42,8 @@ public class RoomService {
     public Room getBiggestRoom(List<Room> rooms) {
         double biggestRoom = 0d;
         Room retriveRoom = new Room();
+        calcArea(rooms);
+
         for (Room r:rooms) {
             if (r.getRoomTotalArea() > biggestRoom) {
                 biggestRoom = r.getRoomTotalArea();
