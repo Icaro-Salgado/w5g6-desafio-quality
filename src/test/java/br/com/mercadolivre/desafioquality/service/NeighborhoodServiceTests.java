@@ -73,8 +73,10 @@ public class NeighborhoodServiceTests {
         UUID randomUUID = UUID.randomUUID();
         neighborhood.setId(randomUUID);
 
-        NeighborhoodService neighborhoodServiceMock = Mockito.mock(NeighborhoodService.class);
-        Mockito.when(neighborhoodServiceMock.getNeighborhoodById(randomUUID)).thenReturn(neighborhood);
+        Mockito.when(neighborhoodRepository.find(Mockito.any())).thenReturn(Optional.of(neighborhood));
+        neighborhoodService.deleteNeighborhoodById(randomUUID);
+
+        Mockito.verify(neighborhoodRepository, Mockito.times(1)).delete(neighborhood);
     }
 
     @Test
