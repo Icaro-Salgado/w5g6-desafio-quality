@@ -10,7 +10,7 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 public class CreateRoomsDTO {
     @NotEmpty(message = "O campo não pode estar vazio.\n")
-    @Size(max = 30,message = "O comprimento do cômodo não pode exceder 30 caracteres.")
+    @Size(max = 30,message = "O nome do cômodo não pode exceder 30 caracteres.")
     @Pattern(regexp = "^\\b[A-Z].*\\b", message = "O nome do comodo deve começar com uma letra maiúscula!")
     String name;
 
