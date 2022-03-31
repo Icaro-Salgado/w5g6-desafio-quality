@@ -1,14 +1,17 @@
 package br.com.mercadolivre.desafioquality.controller;
 
-import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
-import br.com.mercadolivre.desafioquality.dto.response.PropertyResponseDTO;
+import br.com.mercadolivre.desafioquality.dto.response.NeighborhoodListDTO;
+import br.com.mercadolivre.desafioquality.dto.response.NeighborhoodListItemDTO;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
-import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.models.Neighborhood;
+import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 public class NeighborhoodController {
 
+    private final NeighborhoodService neighborhoodService;
+
     @PostMapping("/")
     public ResponseEntity<List<Object>> postNeighborhood() throws DatabaseReadException, DatabaseManagementException {
 
@@ -24,9 +29,29 @@ public class NeighborhoodController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Object>> requestNeighborhoodList() throws DatabaseReadException, DatabaseManagementException {
+    public ResponseEntity<NeighborhoodListDTO> requestNeighborhoodList(
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(required = false, defaultValue = "10") Integer size,
+            UriComponentsBuilder uriBuilder) throws DatabaseReadException {
 
-        return ResponseEntity.ok(new ArrayList<>());
+        List<Neighborhood> neighborhoodList = neighborhoodService.listNeighborhood(page, size);
+
+        int totalPages = neighborhoodService.getTotalPages(size);
+
+        URI nextPageURI = page < totalPages ? uriBuilder
+                .replacePath("/api/v1/neighborhood")
+                .replaceQueryParam("page", page + 1)
+                .replaceQueryParam("size", size)
+                .build().toUri() : URI.create("");
+
+
+
+        return ResponseEntity.ok(NeighborhoodListDTO.modelToDTO(
+                NeighborhoodListItemDTO.modelToDTO(neighborhoodList, uriBuilder),
+                page,
+                neighborhoodService.getTotalPages(size),
+                nextPageURI
+        ));
     }
 
     @GetMapping("/{id}")
