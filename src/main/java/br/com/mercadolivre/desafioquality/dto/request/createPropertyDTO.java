@@ -15,8 +15,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @Builder
-public class PropertyDTO {
-    private UUID id;
+public class createPropertyDTO {
 
     @NotEmpty(message = "O nome da propiedade não pode ficar vazio!\n")
     @Size(max = 30,message = "O comprimento do nome não pode exceder 30 caracteres!\n")
@@ -28,7 +27,6 @@ public class PropertyDTO {
     private String propDistrict;
 
     private List<@Valid Room> propRooms;
-
 
     public Property toModel() {
         return Property.builder()

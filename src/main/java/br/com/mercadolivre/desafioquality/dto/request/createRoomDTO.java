@@ -6,8 +6,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.UUID;
 
-public class RoomDTO {
-    private UUID id;
+public class createRoomDTO {
 
     @NotEmpty(message = "O campo não pode estar vazio.\n")
     @Size(max = 30,message = "O comprimento do cômodo não pode exceder 30 caracteres.")
