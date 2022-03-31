@@ -33,7 +33,7 @@ public class PropertyListDTO {
                 .propName(property.getPropName())
                 .propDistrict(property.getPropDistrict())
                 .price(property.getPropValue())
-                .uri(uriBuilder.path(basePath.concat("/{id}")).buildAndExpand(property.getId()).toUri().toString())
+                .uri(uriBuilder.replacePath(basePath.concat("/{id}")).build(property.getId()).toString())
                 .roomsQty(property.getPropRooms().size())
                 .build())
                 .collect(Collectors.toList());

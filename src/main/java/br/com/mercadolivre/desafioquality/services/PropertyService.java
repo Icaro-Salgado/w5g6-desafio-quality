@@ -43,7 +43,7 @@ public class PropertyService {
     private void makePropertyEntity(Property property) throws DatabaseReadException, DatabaseManagementException {
         property.setId(UUID.randomUUID());
         property.setPropArea(this.calcPropertyArea(property));
-        property.setPropValue(this.calcPropertyPrice(property));
+        property.setPropValue(this.calcPropertyPrice(property)); // TODO: Colocar o valor somente no read
     }
 
     private BigDecimal calcPropertyPrice(Property property) throws DatabaseReadException, DatabaseManagementException {
