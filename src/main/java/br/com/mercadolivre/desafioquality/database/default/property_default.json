@@ -1,1 +1,15 @@
-[]
+[{
+  "id": "77b3737d-7450-4d94-8f95-936e2c17e2cc",
+  "propName": "Sonho Meu",
+  "propDistrict": "São Paulo",
+  "propRooms": [
+    {
+      "id": "992b27ac-3f12-42e2-9925-b2f922c48ded",
+      "roomName": "bedroom",
+      "roomWidth": 5,
+      "roomLength": 4,
+      "roomTotalArea": 20
+    }
+  ],
+  "propValue": 200000
+}]
