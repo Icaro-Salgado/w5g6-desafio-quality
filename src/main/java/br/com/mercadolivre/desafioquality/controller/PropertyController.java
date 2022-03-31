@@ -3,7 +3,7 @@ package br.com.mercadolivre.desafioquality.controller;
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
 import br.com.mercadolivre.desafioquality.dto.request.CreatePropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
-import br.com.mercadolivre.desafioquality.dto.response.PropertyCreatedDTO;
+import br.com.mercadolivre.desafioquality.dto.response.PropertyListDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyResponseDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
 import br.com.mercadolivre.desafioquality.exceptions.*;
@@ -32,11 +32,12 @@ public class PropertyController {
     final private PropertyService propertyService;
 
     @GetMapping("/")
-    public ResponseEntity<List<PropertyResponseDTO>> requestPropertyList() throws DatabaseReadException, DatabaseManagementException {
+    public ResponseEntity<List<PropertyListDTO>> requestPropertyList(UriComponentsBuilder uriBuilder)
+            throws DatabaseReadException, DatabaseManagementException {
+
         List<Property> properties = propertyService.ListProperties();
 
-        List<PropertyResponseDTO> response = PropertyMapper.toPropertyResponse(properties);
-
+        List<PropertyListDTO> response = PropertyListDTO.ToDtoList(properties, uriBuilder, "/api/v1/property");
 
         return ResponseEntity.ok(response);
     }
