@@ -4,6 +4,7 @@ package br.com.mercadolivre.desafioquality.services;
 import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.repository.ApplicationRepository;
 
 import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
@@ -41,9 +42,12 @@ public class PropertyService {
     }
 
     private void makePropertyEntity(Property property) throws DatabaseReadException, DatabaseManagementException {
+        // Propriedade
         property.setId(UUID.randomUUID());
         property.setPropArea(this.calcPropertyArea(property));
-        property.setPropValue(this.calcPropertyPrice(property));
+
+        // Quartos
+        property.getPropRooms().forEach(r -> r.setId(UUID.randomUUID()));
     }
 
     private BigDecimal calcPropertyPrice(Property property) throws DatabaseReadException, DatabaseManagementException {
@@ -62,34 +66,8 @@ public class PropertyService {
         return neighborhood.getValueDistrictM2().multiply(BigDecimal.valueOf(this.calcPropertyArea(property)));
     }
 
-    public Property getPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
-        if(propertyId == null) {
-            throw new NullIdException("O id é nulo!");
-        }
-
-        Optional<Property> response = propertyRepository.find(propertyId);
-
-        if(response.isEmpty()) {
-            throw new PropertyNotFoundException("Propriedade não encontrada");
-        }
-
-        Property requestedProperty = response.get();
-
-        List<Neighborhood> neighborhoodList = neighborhoodRepository.read();
-
-        Optional<Neighborhood> requestedPropertyNeighborhood = neighborhoodList
-                .stream()
-                .filter(n -> n.getNameDistrict().equals(requestedProperty.getPropDistrict()))
-                .findFirst();
-
-        Neighborhood neighborhood;
-        if (requestedPropertyNeighborhood.isEmpty()) {
-            throw new NeighborhoodNotFoundException("Bairro não encontrado");
-        }
-
-        requestedProperty.setPropValue(this.calcPropertyPrice(requestedProperty));
-
-        return requestedProperty;
+    public BigDecimal getPropertyPrice(UUID propertyId) throws NullIdException, DatabaseReadException, DatabaseManagementException {
+       return this.findProperty(propertyId).getPropValue();
     }
 
     public Property findProperty(UUID propertyId) throws PropertyNotFoundException, DatabaseReadException, DatabaseManagementException {
@@ -102,6 +80,8 @@ public class PropertyService {
         if(response.isEmpty()) {
             throw new PropertyNotFoundException("Propriedade não encontrada");
         }
+        Property property = response.get();
+        property.setPropValue(this.calcPropertyPrice(property));
 
         return response.get();
     }
@@ -116,12 +96,14 @@ public class PropertyService {
         return roomService.calcArea(property.getPropRooms());
     }
 
-
-    public Property find(UUID id) throws DatabaseReadException, DatabaseManagementException {
-        return propertyRepository.find(id).orElse(new Property());
-    }
-
     public List<Property> ListProperties() throws DatabaseReadException, DatabaseManagementException {
-        return propertyRepository.read();
+        List<Property> properties = propertyRepository.read();
+
+        for (Property property :
+                properties) {
+            property.setPropValue(this.calcPropertyPrice(property));
+        }
+
+        return properties;
     }
 }

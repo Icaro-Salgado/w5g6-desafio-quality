@@ -66,7 +66,7 @@ public class PropertyServiceTests {
         Mockito.when(this.neighborhoodRepository.read()).thenReturn(List.of(fakeNeighborhood));
 
         // ACT
-        BigDecimal real = this.propertyService.getPropertyPrice(UUID.randomUUID()).getPropValue();
+        BigDecimal real = this.propertyService.getPropertyPrice(UUID.randomUUID());
 
         // ASSERT
         Assertions.assertEquals(expected, real);
@@ -138,7 +138,7 @@ public class PropertyServiceTests {
         Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(Optional.empty());
 
         // ACT
-        Property emptyProperty = this.propertyService.find(UUID.randomUUID());
+        Property emptyProperty = this.propertyService.findProperty(UUID.randomUUID());
 
         // ASSERT
         Assertions.assertTrue(
