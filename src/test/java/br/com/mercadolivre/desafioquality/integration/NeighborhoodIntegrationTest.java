@@ -2,12 +2,15 @@ package br.com.mercadolivre.desafioquality.integration;
 
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.utils.DatabaseUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -80,4 +83,23 @@ public class NeighborhoodIntegrationTest {
         Assertions.assertEquals(0, updatedNeighborhoods.length);
     }
 
+    @Test
+    @DisplayName("NeighborhoodController - POST - /api/v1/neighborhood/")
+    public void testPostNeighborhood() throws Exception {
+
+        Neighborhood neighborhood = Neighborhood.builder()
+                .nameDistrict("Vila Olímpia")
+                .valueDistrictM2(BigDecimal.valueOf(45000))
+                .build();
+
+        ObjectMapper Obj = new ObjectMapper();
+
+        String payload = Obj.writeValueAsString(neighborhood);
+
+        MvcResult response = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/neighborhood/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
+    }
 }
