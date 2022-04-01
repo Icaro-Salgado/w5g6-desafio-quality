@@ -2,7 +2,7 @@ package br.com.mercadolivre.desafioquality.integration;
 
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
-import br.com.mercadolivre.desafioquality.test_utils.NeighborhoodUtils;
+import br.com.mercadolivre.desafioquality.test_utils.TestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -151,7 +151,9 @@ public class NeighborhoodIntegrationTest {
                 .valueDistrictM2(BigDecimal.valueOf(-1))
                 .build();
 
-        NeighborhoodUtils.executePostTestExpectingBadRequest(neighborhood,
+        TestUtils.assertErrorMessage(
+                neighborhood,
+                "/api/v1/neighborhood/",
                 "O valor do metro quadrado do bairro não pode ser menor ou igual a zero!",
                 mockMvc);
     }
@@ -165,8 +167,9 @@ public class NeighborhoodIntegrationTest {
                 .valueDistrictM2(BigDecimal.valueOf(12345678901234.0))
                 .build();
 
-        NeighborhoodUtils.executePostTestExpectingBadRequest(
+        TestUtils.assertErrorMessage(
                 neighborhood,
+                "/api/v1/neighborhood/",
                 "O valor do metro quadrado não pode exceder 13 digitos!",
                 mockMvc);
     }
@@ -180,9 +183,10 @@ public class NeighborhoodIntegrationTest {
                 .valueDistrictM2(null)
                 .build();
 
-        NeighborhoodUtils.executePostTestExpectingBadRequest(
+        TestUtils.assertErrorMessage(
                 neighborhood,
-                "valor do metro quadrado do bairro não pode ficar vazio!",
+                "/api/v1/neighborhood/",
+                "O valor do metro quadrado do bairro não pode ficar vazio!",
                 mockMvc);
     }
 
@@ -195,8 +199,9 @@ public class NeighborhoodIntegrationTest {
                 .valueDistrictM2(BigDecimal.valueOf(10000.0))
                 .build();
 
-        NeighborhoodUtils.executePostTestExpectingBadRequest(
+        TestUtils.assertErrorMessage(
                 neighborhood,
+                "/api/v1/neighborhood/",
                 "O bairro não pode ficar vazio!",
                 mockMvc);
     }
@@ -210,8 +215,9 @@ public class NeighborhoodIntegrationTest {
                 .valueDistrictM2(BigDecimal.valueOf(10000.0))
                 .build();
 
-        NeighborhoodUtils.executePostTestExpectingBadRequest(
+        TestUtils.assertErrorMessage(
                 neighborhood,
+                "/api/v1/neighborhood/",
                 "O comprimento do bairro não pode exceder 45 caracteres!",
                 mockMvc);
     }

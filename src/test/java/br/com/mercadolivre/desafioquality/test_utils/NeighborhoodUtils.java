@@ -33,27 +33,4 @@ public class NeighborhoodUtils {
 
         return result;
     }
-
-    public static void executePostTestExpectingBadRequest(
-            Neighborhood neighborhoodToTest,
-            String message,
-            MockMvc mockMvc
-    ) throws Exception {
-
-        ObjectMapper Obj = new ObjectMapper();
-
-        String payload = Obj.writeValueAsString(neighborhoodToTest);
-
-        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/neighborhood/")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(payload))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andReturn();
-
-        Optional<MethodArgumentNotValidException> someException = Optional.ofNullable((MethodArgumentNotValidException) result.getResolvedException());
-        if (someException.isPresent()) {
-            String msg = someException.get().getBindingResult().getAllErrors().get(0).getDefaultMessage();
-            Assertions.assertEquals(msg, message);
-        }
-    }
 }
