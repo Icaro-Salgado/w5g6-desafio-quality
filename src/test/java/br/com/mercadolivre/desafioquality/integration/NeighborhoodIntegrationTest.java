@@ -32,7 +32,7 @@ public class NeighborhoodIntegrationTest {
     @Autowired
     private DatabaseUtils<Neighborhood[]> databaseUtils;
 
-    private String filename = "neighborhood.json";
+    private final String filename = "neighborhood.json";
 
     @BeforeAll
     public void beforeAll() {
@@ -41,7 +41,7 @@ public class NeighborhoodIntegrationTest {
 
     @BeforeEach
     public void beforeEach() throws IOException {
-        databaseUtils.resetDatabase(filename);
+        databaseUtils.loadDefaultFiles(filename, Neighborhood[].class);
     }
 
     @AfterAll
@@ -81,6 +81,45 @@ public class NeighborhoodIntegrationTest {
 
         Neighborhood[] updatedNeighborhoods = databaseUtils.readFromFile(filename, Neighborhood[].class);
         Assertions.assertEquals(0, updatedNeighborhoods.length);
+    }
+
+
+    @Test
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/")
+    public void testNeighborhoodList() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/v1/neighborhood/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(1))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.neighborhoods").isNotEmpty());
+    }
+
+    @Test
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/?size=1")
+    public void testNeighborhoodListWithMultiplePages() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/v1/neighborhood/?size=1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.totalPages").value(5))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.neighborhoods.length()").value(1));
+    }
+
+    @Test
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/?page=2&size=4")
+    public void testNeighborhoodListInAnotherPage() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/v1/neighborhood/?page=2&size=4"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.page").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.neighborhoods.length()").value(1));
+    }
+
+    @Test
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/?page=2&size=null")
+    public void testNeighborhoodListWhenReceiveInvalidParameter() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/v1/neighborhood/?page=2&size=null"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

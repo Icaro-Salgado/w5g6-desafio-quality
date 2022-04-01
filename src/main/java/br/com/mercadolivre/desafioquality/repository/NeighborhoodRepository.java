@@ -29,6 +29,19 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
         return Arrays.stream(neighborhoods).collect(Collectors.toList());
     }
 
+    public List<Neighborhood> read(Integer offset, Integer limit) throws DatabaseReadException {
+        Neighborhood[] neighborhoods = fileManager.readFromFile(filename, Neighborhood[].class);
+
+        if (neighborhoods.length == 0 || offset > neighborhoods.length) {
+            return new ArrayList<>();
+        }
+
+        List<Neighborhood> result = Arrays.stream(neighborhoods).collect(Collectors.toList());
+
+        int limitIndex = Math.min(offset + limit, result.size());
+        return result.subList(offset, limitIndex);
+    }
+
     @Override
     public Optional<Neighborhood> find(UUID id) throws DatabaseReadException {
         Neighborhood[] neighborhoods = fileManager.readFromFile(filename, Neighborhood[].class);

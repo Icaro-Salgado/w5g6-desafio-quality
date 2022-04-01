@@ -9,6 +9,9 @@ import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,7 +20,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class NeighborhoodService {
 
-    private NeighborhoodRepository neighborhoodRepository;
+    private final NeighborhoodRepository neighborhoodRepository;
+
 
     public UUID createNeighborhood(Neighborhood newNeighborhood) throws DbEntryAlreadyExists, DatabaseWriteException, DatabaseReadException {
 
@@ -41,7 +45,18 @@ public class NeighborhoodService {
         return newNeighborhood.getId();
     }
 
-    public void listNeighborhood(){}
+    public List<Neighborhood> listNeighborhood(Integer page, Integer limitNumber) throws DatabaseReadException {
+        if(page == null || page < 0 || limitNumber == null || limitNumber < 0){
+            throw new InvalidParameterException("Limite ou página inválida");
+        }
+
+        int MAX_LIMIT = 100;
+        int limit = limitNumber > MAX_LIMIT ? MAX_LIMIT : limitNumber;
+
+        Integer offSet =  page <= 1 ? 0 : (page - 1)  * limit;
+
+        return neighborhoodRepository.read(offSet, limit);
+    }
 
     public Neighborhood getNeighborhoodById(UUID id) throws DatabaseReadException {
         Optional<Neighborhood> neighborhoodExists = this.neighborhoodRepository.find(id);
@@ -49,6 +64,16 @@ public class NeighborhoodService {
             return neighborhoodExists.get();
         }
         throw new NeighborhoodNotFoundException("Bairro não encontrado");
+    }
+
+    public Integer getTotalPages(Integer limit) throws DatabaseReadException {
+        if (limit == null || limit <= 0) {
+            return 0;
+        }
+
+        int results = neighborhoodRepository.read().size();
+
+        return new BigDecimal(results).divide(new BigDecimal(limit), RoundingMode.CEILING).intValue();
     }
 
     public void deleteNeighborhoodById(UUID id) throws DatabaseReadException, DatabaseWriteException {
