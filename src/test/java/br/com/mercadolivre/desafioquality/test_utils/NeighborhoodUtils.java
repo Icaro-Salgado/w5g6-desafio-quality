@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public class NeighborhoodUtils {
 
-    public static List<Neighborhood> getMockList(Integer qty){
+    public static List<Neighborhood> getMockList(Integer qty) {
         List<Neighborhood> result = new ArrayList<>();
-        for (int i = 0; i < qty; i++){
+        for (int i = 0; i < qty; i++) {
             result.add(
                     new Neighborhood(
                             UUID.randomUUID(),
