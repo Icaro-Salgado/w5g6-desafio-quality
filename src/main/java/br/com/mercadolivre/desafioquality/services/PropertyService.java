@@ -28,7 +28,7 @@ public class PropertyService {
     private final NeighborhoodValidationService neighborhoodValidationService;
     //
 
-    public Property addProperty(Property propertyToAdd)
+    public UUID addProperty(Property propertyToAdd)
             throws DbEntryAlreadyExists, DatabaseManagementException, DatabaseWriteException, DatabaseReadException, NeighborhoodNotFoundException {
 
         // Validations, por enquanto só temos a validação caso o bairro exista
@@ -38,7 +38,7 @@ public class PropertyService {
         this.makePropertyEntity(propertyToAdd);
 
         // Se ele não conseguir adicionar a property ele vai jogar um erro para ser tratado no Advice do controller
-        return propertyRepository.add(propertyToAdd);
+        return propertyRepository.add(propertyToAdd).getId();
     }
 
     private void makePropertyEntity(Property property) throws DatabaseReadException, DatabaseManagementException {
