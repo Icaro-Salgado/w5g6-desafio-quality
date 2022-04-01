@@ -85,7 +85,7 @@ public class NeighborhoodIntegrationTest {
 
 
     @Test
-    @DisplayName("PropertyController - GET - /api/v1/neighborhood/")
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/")
     public void testNeighborhoodList() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/neighborhood/"))
@@ -95,7 +95,7 @@ public class NeighborhoodIntegrationTest {
     }
 
     @Test
-    @DisplayName("PropertyController - GET - /api/v1/neighborhood/?size=1")
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/?size=1")
     public void testNeighborhoodListWithMultiplePages() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/neighborhood/?size=1"))
@@ -105,7 +105,7 @@ public class NeighborhoodIntegrationTest {
     }
 
     @Test
-    @DisplayName("PropertyController - GET - /api/v1/neighborhood/?page=2&size=4")
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/?page=2&size=4")
     public void testNeighborhoodListInAnotherPage() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/neighborhood/?page=2&size=4"))
@@ -115,11 +115,11 @@ public class NeighborhoodIntegrationTest {
     }
 
     @Test
-    @DisplayName("PropertyController - GET - /api/v1/neighborhood/?page=2&size=null")
-    public void testNeighborhoodListErrorWhenReceiveInvalidParameter() throws Exception {
+    @DisplayName("NeighborhoodController - GET - /api/v1/neighborhood/?page=2&size=null")
+    public void testNeighborhoodListWhenReceiveInvalidParameter() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/neighborhood/?page=2&size=null"))
-                .andExpect(MockMvcResultMatchers.status().is4xxClientError());
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test

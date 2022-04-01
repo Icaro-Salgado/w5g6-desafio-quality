@@ -45,10 +45,13 @@ public class NeighborhoodService {
         return newNeighborhood.getId();
     }
 
-    public List<Neighborhood> listNeighborhood(Integer page, Integer limit) throws DatabaseReadException {
-        if(page == null || page < 0 || limit == null || limit < 0){
+    public List<Neighborhood> listNeighborhood(Integer page, Integer limitNumber) throws DatabaseReadException {
+        if(page == null || page < 0 || limitNumber == null || limitNumber < 0){
             throw new InvalidParameterException("Limite ou página inválida");
         }
+
+        int MAX_LIMIT = 100;
+        int limit = limitNumber > MAX_LIMIT ? MAX_LIMIT : limitNumber;
 
         Integer offSet =  page <= 1 ? 0 : (page - 1)  * limit;
 

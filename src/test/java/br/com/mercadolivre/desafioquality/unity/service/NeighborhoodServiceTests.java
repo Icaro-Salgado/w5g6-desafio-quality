@@ -99,6 +99,19 @@ public class NeighborhoodServiceTests {
     }
 
     @Test
+    @DisplayName("Given higher limit, when call listNeighborhood, should use a maxDefined limit")
+    public void testIfCallRepositoryWithMaxLimit() throws DatabaseReadException {
+        int expectedLimit = 100;
+        List<Neighborhood> expectedList = NeighborhoodUtils.getMockList(100);
+        Mockito.when(neighborhoodRepository.read(Mockito.anyInt(), Mockito.anyInt())).thenReturn(expectedList);
+
+        List<Neighborhood> result = neighborhoodService.listNeighborhood(1, 99999);
+
+        assertEquals(expectedList, result);
+        Mockito.verify(neighborhoodRepository, Mockito.times(1)).read(0, expectedLimit);
+    }
+
+    @Test
     @DisplayName("Given negative page and limit, when call listNeighborhood, should throw an exception")
     public void testIfThrowExceptionIfReceiveInvalidLimit() throws DatabaseReadException {
         assertThrows(InvalidParameterException.class, () -> neighborhoodService.listNeighborhood(1, -1));

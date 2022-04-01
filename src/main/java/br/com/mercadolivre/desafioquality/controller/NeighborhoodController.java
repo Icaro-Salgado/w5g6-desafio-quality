@@ -9,6 +9,7 @@ import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
 import br.com.mercadolivre.desafioquality.exceptions.DbEntryAlreadyExists;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
+import br.com.mercadolivre.desafioquality.test_utils.IntegerUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +49,12 @@ public class NeighborhoodController {
 
     @GetMapping("/")
     public ResponseEntity<NeighborhoodListDTO> requestNeighborhoodList(
-            @RequestParam(required = false, defaultValue = "1") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer size,
+            @RequestParam(required = false, defaultValue = "1", value = "page") String pageNumber,
+            @RequestParam(required = false, defaultValue = "10", value = "size") String sizeNumber,
             UriComponentsBuilder uriBuilder) throws DatabaseReadException {
+        Integer page = IntegerUtils.parseToInt(pageNumber, 1, false);
+        Integer size = IntegerUtils.parseToInt(sizeNumber, 10, false);
+
 
         List<Neighborhood> neighborhoodList = neighborhoodService.listNeighborhood(page, size);
 

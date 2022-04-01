@@ -36,10 +36,7 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
             return new ArrayList<>();
         }
 
-
         List<Neighborhood> result = Arrays.stream(neighborhoods).collect(Collectors.toList());
-
-        System.out.println(offset);
 
         int limitIndex = Math.min(offset + limit, result.size());
         return result.subList(offset, limitIndex);
