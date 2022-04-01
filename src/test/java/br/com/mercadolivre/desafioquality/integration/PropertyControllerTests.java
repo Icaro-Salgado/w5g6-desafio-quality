@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,5 +118,21 @@ public class PropertyControllerTests {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().json(response)).andReturn();
+    }
+
+    @Test
+    @DisplayName("PropertyController - GET - /api/v1/property-value/{propertyId}")
+    public void testCalculatedPropertyValue() throws Exception {
+        // SETUP
+        this.populateFakeDatabase();
+        Property fakeProperty = PropertyUtils.getFakeProperties().get(0);
+
+        // Building response
+        BigDecimal response = fakeProperty.getPropValue();
+
+        mockMvc.perform(MockMvcRequestBuilders.
+                get("/api/v1/property/{propertyId}", fakeProperty.getId().toString()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .equals(response);
     }
 }
