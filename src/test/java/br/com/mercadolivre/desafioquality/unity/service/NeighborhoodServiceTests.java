@@ -143,14 +143,17 @@ public class NeighborhoodServiceTests {
 
         Neighborhood neighborhoodOne = Neighborhood
                 .builder()
+                .id(UUID.randomUUID())
                 .nameDistrict("Vila Maria")
                 .valueDistrictM2(BigDecimal.valueOf(10000.0))
                 .build();
 
         Mockito.when(this.neighborhoodRepository.add(any())).thenReturn(neighborhoodOne);
 
-        Neighborhood testResult = this.neighborhoodService.createNeighborhood(neighborhoodOne);
+        UUID testResult = this.neighborhoodService.createNeighborhood(neighborhoodOne);
 
         Mockito.verify(neighborhoodRepository, Mockito.times(1)).add(neighborhoodOne);
+
+        Assertions.assertEquals(testResult, neighborhoodOne.getId());
     }
 }

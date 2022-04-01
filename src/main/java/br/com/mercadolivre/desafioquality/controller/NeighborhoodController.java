@@ -36,11 +36,11 @@ public class NeighborhoodController {
 
         Neighborhood newNeighborhood = newNeighborhoodDTO.toModel();
 
-        Neighborhood addedNeighborhood = neighborhoodService.createNeighborhood(newNeighborhood);
+        UUID addedNeighborhood = neighborhoodService.createNeighborhood(newNeighborhood);
 
         URI uri = uriBuilder
                 .path("api/v1/neighborhood/{id}")
-                .buildAndExpand(addedNeighborhood.getId())
+                .buildAndExpand(addedNeighborhood)
                 .toUri();
 
         return ResponseEntity.created(uri).build();
