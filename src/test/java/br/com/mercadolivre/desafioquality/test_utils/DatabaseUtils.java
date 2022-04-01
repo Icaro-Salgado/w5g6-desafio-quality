@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -15,12 +16,15 @@ public class DatabaseUtils<T> {
     @Value("${path.database.file}")
     private String pathDatabase;
 
+    @Value("${path.database.default.file}")
+    private String pathDefaultDatabases;
+
     private File dbFile = null;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void startDatabase(String filename) {
-        if (dbFile == null) {
+        if (dbFile == null || !dbFile.getAbsolutePath().contains(filename)) {
             dbFile = new File(pathDatabase.concat(filename));
         }
     }
@@ -47,6 +51,14 @@ public class DatabaseUtils<T> {
                 file.delete();
             }
         }
+    }
+
+    public void loadDefaultFiles(String filename, Class<T> typeParameterClass) throws IOException {
+        String defaultFile = filename.replace(".json", "").concat("_default.json");
+        T fromFile = objectMapper.readValue(new File(pathDefaultDatabases.concat(defaultFile)), typeParameterClass);
+
+        writeIntoFile(filename, fromFile);
+
     }
 
 }
