@@ -1,4 +1,4 @@
-package br.com.mercadolivre.desafioquality.service;
+package br.com.mercadolivre.desafioquality.unity.service;
 
 import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.services.RoomService;
@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
