@@ -19,7 +19,7 @@ public class NeighborhoodService {
 
     private NeighborhoodRepository neighborhoodRepository;
 
-    public Neighborhood createNeighborhood(Neighborhood newNeighborhood) throws DbEntryAlreadyExists, DatabaseWriteException, DatabaseReadException {
+    public UUID createNeighborhood(Neighborhood newNeighborhood) throws DbEntryAlreadyExists, DatabaseWriteException, DatabaseReadException {
 
         List<Neighborhood> neighborhoods = neighborhoodRepository.read();
 
@@ -36,7 +36,9 @@ public class NeighborhoodService {
         }
 
         newNeighborhood.setId(UUID.randomUUID());
-        return neighborhoodRepository.add(newNeighborhood);
+        neighborhoodRepository.add(newNeighborhood);
+
+        return newNeighborhood.getId();
     }
 
     public void listNeighborhood(){}
