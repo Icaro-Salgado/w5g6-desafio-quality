@@ -120,7 +120,7 @@ public class PropertyServiceTests {
     public void testIfCreatedPropertyReceivesAnId() throws DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException, DatabaseManagementException {
 
         // SETUP
-        Property fakeProperty = new Property();
+        Property fakeProperty = PropertyUtils.buildMockProperty();
 
         Mockito.when(this.propertyRepository.add(Mockito.any())).thenReturn(fakeProperty);
 
@@ -131,32 +131,25 @@ public class PropertyServiceTests {
         Assertions.assertNotNull(fakeProperty.getId());
     }
 
-    @Test
-    @DisplayName("Given a scenario that a property is not found, when call find method, then return an empty Property")
-    public void testIfOnNotFoundPropertyIdOnDbItReturnsANewEmptyProperty() throws DatabaseReadException, DatabaseManagementException {
-        // SETUP
-        Mockito.when(this.propertyRepository.find(Mockito.any())).thenReturn(Optional.empty());
 
-        // ACT
-        Property emptyProperty = this.propertyService.findProperty(UUID.randomUUID());
-
-        // ASSERT
-        Assertions.assertTrue(
-                Stream.of(emptyProperty.getPropDistrict(), emptyProperty.getPropName())
-                        .allMatch(Objects::isNull));
-    }
 
     @Test
     @DisplayName("Given a storage containing four valid properties, when call listProperties, then return all these properties")
     public void testIfListOfPropertyShoudBeAPropertyList() throws DatabaseReadException, DatabaseManagementException {
         //SETUP
-        List<Property> propertiesFake = List.of(
-                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35)),
-                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35)),
-                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35)),
-                new Property(UUID.randomUUID(), "PropiedadeFake", "bairroFake", new ArrayList<Room>(), new BigDecimal(190.35))
-        );
+        //Fake list of properties
+        List<Property> propertiesFake =  new ArrayList<Property>();
+        propertiesFake.add(PropertyUtils.buildMockProperty());
 
+        /// Setting up fake neighborhood
+        Neighborhood fakeNeighborhood = new Neighborhood();
+        fakeNeighborhood.setValueDistrictM2(BigDecimal.valueOf(100));
+
+        String fakeNeighborhoodName = "Fake neighborhood";
+        fakeNeighborhood.setNameDistrict(fakeNeighborhoodName);
+
+
+        Mockito.when(this.neighborhoodRepository.read()).thenReturn(List.of(fakeNeighborhood));
         Mockito.when(this.propertyRepository.read()).thenReturn(propertiesFake);
 
         //ACT
