@@ -1,11 +1,8 @@
-package br.com.mercadolivre.desafioquality.utils;
+package br.com.mercadolivre.desafioquality.test_utils;
 
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
-import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.io.File;
 import java.io.IOException;
