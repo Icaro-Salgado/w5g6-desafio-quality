@@ -21,7 +21,7 @@ public class NeighborhoodDTO {
     private String nameDistrict;
 
     @NotNull(message = "O valor do metro quadrado do bairro não pode ficar vazio!")
-    @DecimalMin(value="0.0", inclusive = false, message = "O valor do metro quadrado do bairro não ser menor ou igual a zero!")
+    @DecimalMin(value="0.0", inclusive = false, message = "O valor do metro quadrado do bairro não pode ser menor ou igual a zero!")
     @Digits(integer = 13,fraction = 2,message = "O valor do metro quadrado não pode exceder 13 digitos!")
     private BigDecimal valueDistrictM2;
 
