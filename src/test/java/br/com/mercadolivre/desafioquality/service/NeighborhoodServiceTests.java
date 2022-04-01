@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
 import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
+import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -32,6 +34,8 @@ import java.util.List;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class NeighborhoodServiceTests {
@@ -140,5 +144,20 @@ public class NeighborhoodServiceTests {
         Mockito.verify(neighborhoodRepository, Mockito.times(0)).read();
     }
 
+    @Test
+    @DisplayName("Given a valid neighborhood, when call createNeighborhood, then createNeighborhood must be called once")
+    public void testIfNeighborhoodIsCreated() throws DatabaseWriteException, DbEntryAlreadyExists, DatabaseReadException {
 
+        Neighborhood neighborhoodOne = Neighborhood
+                .builder()
+                .nameDistrict("Vila Maria")
+                .valueDistrictM2(BigDecimal.valueOf(10000.0))
+                .build();
+
+        Mockito.when(this.neighborhoodRepository.add(any())).thenReturn(neighborhoodOne);
+
+        Neighborhood testResult = this.neighborhoodService.createNeighborhood(neighborhoodOne);
+
+        Mockito.verify(neighborhoodRepository, Mockito.times(1)).add(neighborhoodOne);
+    }
 }
