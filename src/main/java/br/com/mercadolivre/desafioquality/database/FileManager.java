@@ -4,6 +4,7 @@ import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,8 @@ import java.nio.file.Files;
 @Component
 public class FileManager<T> {
 
-    private final ObjectMapper objectMapper;
+    @Setter
+    private ObjectMapper objectMapper;
 
     @Value("${path.database.file}")
     private String pathDatabase;
@@ -37,8 +39,6 @@ public class FileManager<T> {
     }
 
     public T readFromFile(String filename, Class<T> typeParameterClass) throws DatabaseReadException {
-        // TODO: Treat this exception
-
         try {
             File db = this.connect(filename);
             return objectMapper.readValue(db, typeParameterClass);
@@ -52,15 +52,13 @@ public class FileManager<T> {
         }
     }
 
-    private File connect(String Dbname) throws DatabaseManagementException {
-        File db = new File(pathDatabase.concat(Dbname));
-
+    private File connect(String Dbname) throws DatabaseManagementException, IOException {
         try {
+            File db = new File(pathDatabase.concat(Dbname));
             return db.exists() ? db : this.loadDefaultDBFrom(Dbname);
 
         } catch (SecurityException e) {
             throw new DatabaseManagementException("Não foi possível ler da database devido a permissão do arquivo".concat(Dbname));
-
         }
     }
 
