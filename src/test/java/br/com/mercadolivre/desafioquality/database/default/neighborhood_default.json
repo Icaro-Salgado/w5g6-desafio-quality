@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "id": "36ea2258-52e4-47a1-a980-83e2e943a986",
+    "nameDistrict":  "São Paulo 1",
+    "valueDistrictM2": 2000.0
+  },
+  {
+    "id": "36ea2258-52e4-47a1-a980-83e2e943a981",
+    "nameDistrict":  "São Paulo 2",
+    "valueDistrictM2": 5000.0
+  },
+  {
+    "id": "36ea2258-52e4-47a1-a980-83e2e943a981",
+    "nameDistrict":  "São Paulo 3",
+    "valueDistrictM2": 5000.0
+  },
+  {
+    "id": "36ea2258-52e4-47a1-a980-83e2e943a981",
+    "nameDistrict":  "São Paulo 4",
+    "valueDistrictM2": 5000.0
+  },
+  {
+    "id": "36ea2258-52e4-47a1-a980-83e2e943a981",
+    "nameDistrict":  "São Paulo 5",
+    "valueDistrictM2": 5000.0
+  }
+]
