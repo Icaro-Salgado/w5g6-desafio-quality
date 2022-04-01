@@ -1,5 +1,6 @@
 package br.com.mercadolivre.desafioquality.integration;
 
+import br.com.mercadolivre.desafioquality.dto.response.PropertyDetailDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyListDTO;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -76,7 +78,6 @@ public class PropertyControllerTests {
     public void testListProperties() throws Exception {
         // SETUP
         this.populateFakeDatabase();
-
         List<Property> fakeProperties = PropertyUtils.getFakeProperties();
 
         // Building response
@@ -94,6 +95,25 @@ public class PropertyControllerTests {
 
         mockMvc.perform(MockMvcRequestBuilders.
                 get("/api/v1/property/"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json(response)).andReturn();
+    }
+
+    @Test
+    @DisplayName("PropertyController - GET - /api/v1/property/")
+    public void testDetailProperty() throws Exception {
+        // SETUP
+        this.populateFakeDatabase();
+        Property fakeProperty = PropertyUtils.getFakeProperties().get(0);
+
+        // Building response
+        PropertyDetailDTO propertyDetailDTO = PropertyDetailDTO.fromModel(fakeProperty);
+        HashMap mappedObject = new ObjectMapper().convertValue(propertyDetailDTO, HashMap.class);
+        String response = new ObjectMapper().writeValueAsString(mappedObject);
+
+        mockMvc.perform(MockMvcRequestBuilders.
+                get("/api/v1/property/{propertyId}", fakeProperty.getId().toString()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().json(response)).andReturn();
