@@ -2,12 +2,14 @@ package br.com.mercadolivre.desafioquality.services;
 
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
+import br.com.mercadolivre.desafioquality.exceptions.DbEntryAlreadyExists;
 import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,7 +19,25 @@ public class NeighborhoodService {
 
     private NeighborhoodRepository neighborhoodRepository;
 
-    public void createNeighborhood(){}
+    public Neighborhood createNeighborhood(Neighborhood newNeighborhood) throws DbEntryAlreadyExists, DatabaseWriteException, DatabaseReadException {
+
+        List<Neighborhood> neighborhoods = neighborhoodRepository.read();
+
+        Optional<Neighborhood> existingNeighborhood = neighborhoods
+                .stream()
+                .filter(neighborhood -> neighborhood.getNameDistrict().equals(newNeighborhood.getNameDistrict()))
+                .findFirst();
+
+        if (existingNeighborhood.isPresent()) {
+            throw new DbEntryAlreadyExists(newNeighborhood
+                    .getNameDistrict()
+                    .concat(" já está cadastrado na base de dados")
+            );
+        }
+
+        newNeighborhood.setId(UUID.randomUUID());
+        return neighborhoodRepository.add(newNeighborhood);
+    }
 
     public void listNeighborhood(){}
 
