@@ -38,4 +38,15 @@ public class PropertyListDTO {
                 .build())
                 .collect(Collectors.toList());
     }
+
+    public static PropertyListDTO fromModel(Property property) {
+        return PropertyListDTO
+                .builder()
+                .id(property.getId())
+                .propName(property.getPropName())
+                .propDistrict(property.getPropDistrict())
+                .price(property.getPropValue())
+                .roomsQty(property.getPropRooms().size())
+                .build();
+    }
 }
