@@ -1,9 +1,8 @@
-package br.com.mercadolivre.desafioquality.service.validators;
+package br.com.mercadolivre.desafioquality.unity.service.validators;
 
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseManagementException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
-import br.com.mercadolivre.desafioquality.exceptions.PropertyNotFoundException;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
@@ -12,7 +11,6 @@ import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class NeighborhoodValidationServiceTests {
     private NeighborhoodValidationService neighborhoodValidationService;
