@@ -16,14 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
 import br.com.mercadolivre.desafioquality.exceptions.NeighborhoodNotFoundException;
 import br.com.mercadolivre.desafioquality.exceptions.*;
-import br.com.mercadolivre.desafioquality.models.Neighborhood;
-import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
-import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.math.BigDecimal;
 import java.util.Optional;

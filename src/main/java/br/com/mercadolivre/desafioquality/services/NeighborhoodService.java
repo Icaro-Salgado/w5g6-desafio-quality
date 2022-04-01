@@ -61,9 +61,6 @@ public class NeighborhoodService {
         throw new NeighborhoodNotFoundException("Bairro não encontrado");
     }
 
-
-    public void deleteNeighborhoodById(){}
-
     public Integer getTotalPages(Integer limit) throws DatabaseReadException {
         if (limit == null || limit <= 0) {
             return 0;
