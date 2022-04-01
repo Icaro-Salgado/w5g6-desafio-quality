@@ -1,4 +1,4 @@
-package br.com.mercadolivre.desafioquality.service;
+package br.com.mercadolivre.desafioquality.unity.service;
 
 import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;

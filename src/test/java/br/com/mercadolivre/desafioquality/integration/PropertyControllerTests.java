@@ -51,7 +51,7 @@ public class PropertyControllerTests {
         databaseUtils.deleteDatabase();
     }
 
-    private void populateFakeDatabase() throws IOException {
+    private List<Property> populateFakeDatabase() throws IOException {
         List<Property> properties = new ArrayList<>();
 
         Neighborhood fakeNeighborhood = Neighborhood
@@ -76,6 +76,8 @@ public class PropertyControllerTests {
         properties.add(property);
 
         databaseUtils.writeIntoFile(propertyFile, properties);
+
+        return properties;
     }
 
     @Test
