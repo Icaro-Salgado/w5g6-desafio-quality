@@ -27,7 +27,7 @@ public class DatabaseUtils<T> {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public void startDatabase(String filename) {
-        if (dbFile == null) {
+        if (dbFile == null || !dbFile.getAbsolutePath().contains(filename)) {
             dbFile = new File(pathDatabase.concat(filename));
         }
     }
