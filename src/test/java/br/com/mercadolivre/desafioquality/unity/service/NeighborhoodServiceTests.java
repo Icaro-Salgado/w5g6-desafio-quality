@@ -5,7 +5,7 @@ import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
-import br.com.mercadolivre.desafioquality.utils.NeighborhoodUtils;
+import br.com.mercadolivre.desafioquality.test_utils.NeighborhoodUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
