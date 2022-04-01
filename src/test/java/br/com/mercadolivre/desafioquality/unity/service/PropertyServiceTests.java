@@ -8,7 +8,7 @@ import br.com.mercadolivre.desafioquality.repository.NeighborhoodRepository;
 import br.com.mercadolivre.desafioquality.repository.PropertyRepository;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
 import br.com.mercadolivre.desafioquality.services.validators.NeighborhoodValidationService;
-import br.com.mercadolivre.desafioquality.utils.PropertyUtils;
+import br.com.mercadolivre.desafioquality.test_utils.PropertyUtils;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 

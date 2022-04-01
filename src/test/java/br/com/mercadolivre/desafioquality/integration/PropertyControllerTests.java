@@ -3,7 +3,7 @@ package br.com.mercadolivre.desafioquality.integration;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.models.Room;
-import br.com.mercadolivre.desafioquality.utils.DatabaseUtils;
+import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
