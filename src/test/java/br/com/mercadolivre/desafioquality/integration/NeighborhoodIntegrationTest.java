@@ -1,7 +1,7 @@
 package br.com.mercadolivre.desafioquality.integration;
 
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
-import br.com.mercadolivre.desafioquality.utils.DatabaseUtils;
+import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package br.com.mercadolivre.desafioquality.utils;
+package br.com.mercadolivre.desafioquality.test_utils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.InvocationTargetException;
