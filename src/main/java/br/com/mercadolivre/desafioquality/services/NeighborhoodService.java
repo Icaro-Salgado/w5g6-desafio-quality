@@ -29,7 +29,7 @@ public class NeighborhoodService {
 
         Optional<Neighborhood> existingNeighborhood = neighborhoods
                 .stream()
-                .filter(neighborhood -> neighborhood.getNameDistrict().equals(newNeighborhood.getNameDistrict()))
+                .filter(neighborhood -> neighborhood.getNameDistrict().toLowerCase().equals(newNeighborhood.getNameDistrict().toLowerCase()))
                 .findFirst();
 
         if (existingNeighborhood.isPresent()) {

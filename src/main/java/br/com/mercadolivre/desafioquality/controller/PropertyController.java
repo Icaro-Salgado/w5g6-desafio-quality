@@ -62,11 +62,11 @@ public class PropertyController {
 
         Property propertyToAdd = propertyToAddDTO.toModel();
 
-        Property addedProperty = propertyService.addProperty(propertyToAdd);
+        UUID addedPropertyId = propertyService.addProperty(propertyToAdd);
 
         URI uri = uriBuilder
                 .path("/api/v1/property/{id}")
-                .buildAndExpand(addedProperty.getId())
+                .buildAndExpand(addedPropertyId)
                 .toUri();
 
         return ResponseEntity.created(uri).build();
