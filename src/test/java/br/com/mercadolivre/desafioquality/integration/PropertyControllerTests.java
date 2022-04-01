@@ -101,7 +101,7 @@ public class PropertyControllerTests {
     }
 
     @Test
-    @DisplayName("PropertyController - GET - /api/v1/property/")
+    @DisplayName("PropertyController - GET - /api/v1/property/{propertyId}")
     public void testDetailProperty() throws Exception {
         // SETUP
         this.populateFakeDatabase();
