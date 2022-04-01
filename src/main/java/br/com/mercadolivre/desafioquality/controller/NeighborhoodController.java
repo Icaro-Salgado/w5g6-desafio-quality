@@ -6,7 +6,6 @@ import br.com.mercadolivre.desafioquality.exceptions.DatabaseReadException;
 import br.com.mercadolivre.desafioquality.exceptions.DatabaseWriteException;
 import br.com.mercadolivre.desafioquality.exceptions.DbEntryAlreadyExists;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
-import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.services.NeighborhoodService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,11 +34,11 @@ public class NeighborhoodController {
 
         Neighborhood newNeighborhood = newNeighborhoodDTO.toModel();
 
-        Neighborhood addedNeighborhood = neighborhoodService.createNeighborhood(newNeighborhood);
+        UUID addedNeighborhood = neighborhoodService.createNeighborhood(newNeighborhood);
 
         URI uri = uriBuilder
                 .path("api/v1/neighborhood/{id}")
-                .buildAndExpand(addedNeighborhood.getId())
+                .buildAndExpand(addedNeighborhood)
                 .toUri();
 
         return ResponseEntity.created(uri).build();
