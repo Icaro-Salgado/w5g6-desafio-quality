@@ -51,7 +51,7 @@ public class PropertyControllerTests {
         databaseUtils.deleteDatabase();
     }
 
-    private void populateFakeDatabase() throws IOException {
+    private List<Property> populateFakeDatabase() throws IOException {
         List<Property> properties = new ArrayList<>();
 
         Neighborhood fakeNeighborhood = Neighborhood
@@ -76,12 +76,45 @@ public class PropertyControllerTests {
         properties.add(property);
 
         databaseUtils.writeIntoFile(propertyFile, properties);
+
+        return properties;
     }
 
     @Test
     @DisplayName("PropertyController - GET - /api/v1/property/property-area/{propertyId}")
     public void testCalculatePropertyArea() throws Exception {
-        populateFakeDatabase();
+        Property fakeProperty = this.populateFakeDatabase().get(0);
+
+        mockMvc.perform(MockMvcRequestBuilders.
+                get("/api/v1/property/property-area/{propertyId}", fakeProperty.getId()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.totalArea").value(68.0));
+    }
+
+    @Test
+    @DisplayName("PropertyController - GET - /api/v1/property")
+    public void testListProperties() throws Exception {
+        List<Property> fakeProperties = populateFakeDatabase();
+
+        // Building response
+        String response = "[";
+
+        for (Property property : fakeProperties) {
+
+            response = response.concat("{");
+            response = response.concat("\"id\":").concat(property.getId().toString()).concat(",\n");
+            response = response.concat("\"propName\":").concat(property.getPropName()).concat(",\n");
+
+            if (fakeProperties.iterator().next() != null) {
+                response = response.concat("},\n");
+            } else {
+                response = response.concat("}\n");
+            }
+
+        }
+        response = response.concat("]");
+
+        System.out.println(response);
 
         mockMvc.perform(MockMvcRequestBuilders.
                 get("/api/v1/property/property-area/{propertyId}", "77b3737d-7450-4d94-8f95-936e2c17e2cc"))
