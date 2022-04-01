@@ -2,12 +2,14 @@ package br.com.mercadolivre.desafioquality.dto.request;
 
 import br.com.mercadolivre.desafioquality.models.Room;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class CreateRoomsDTO {
     @NotEmpty(message = "O campo não pode estar vazio.\n")
     @Size(max = 30,message = "O nome do cômodo não pode exceder 30 caracteres.")

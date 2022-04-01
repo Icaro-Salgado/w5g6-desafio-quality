@@ -1,8 +1,11 @@
 package br.com.mercadolivre.desafioquality.integration;
 
+import br.com.mercadolivre.desafioquality.dto.request.CreatePropertyDTO;
+import br.com.mercadolivre.desafioquality.dto.request.CreateRoomsDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyDetailDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyListDTO;
 import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
 import br.com.mercadolivre.desafioquality.test_utils.PropertyUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -121,7 +123,7 @@ public class PropertyControllerTests {
     }
 
     @Test
-    @DisplayName("PropertyController - GET - /api/v1/property-value/{propertyId}")
+    @DisplayName("PropertyController - GET - /api/v1/property/property-value/{propertyId}")
     public void testCalculatedPropertyValue() throws Exception {
         // SETUP
         this.populateFakeDatabase();
@@ -131,8 +133,48 @@ public class PropertyControllerTests {
         BigDecimal response = fakeProperty.getPropValue();
 
         mockMvc.perform(MockMvcRequestBuilders.
-                get("/api/v1/property/{propertyId}", fakeProperty.getId().toString()))
+                get("/api/v1/property/property-value/{propertyId}", fakeProperty.getId().toString()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .equals(response);
+    }
+
+    @Test
+    @DisplayName("PropertyController - POST - /api/v1/property")
+    public void testPostProperty() throws Exception {
+        // SETUP
+        this.populateFakeDatabase();
+        Property fakeProperty = PropertyUtils.getFakeProperties().get(0);
+
+        // Building payload
+        List<Room> propRooms = fakeProperty.getPropRooms();
+
+        List<CreateRoomsDTO> roomDTOS = new ArrayList<>();
+        for (Room room : propRooms) {
+            roomDTOS.add(
+                    CreateRoomsDTO
+                            .builder()
+                            .name(room.getRoomName())
+                            .length(room.getRoomLength())
+                            .width(room.getRoomWidth())
+                            .build()
+            );
+        }
+
+        CreatePropertyDTO createPropertyDTO = CreatePropertyDTO
+                .builder()
+                .propName(fakeProperty.getPropName())
+                .propDistrict(fakeProperty.getPropDistrict())
+                .rooms(roomDTOS)
+                .build();
+
+        HashMap mappedPayload = new ObjectMapper().convertValue(createPropertyDTO, HashMap.class);
+        String payload = new ObjectMapper().writeValueAsString(mappedPayload);
+
+        mockMvc.perform(MockMvcRequestBuilders
+        .post("/api/v1/property")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
     }
 }
