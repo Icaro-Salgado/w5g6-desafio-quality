@@ -56,16 +56,11 @@ public class DatabaseUtils<T> {
         }
     }
 
-    public void loadDefaultFiles(String filename){
-        File defaultDBFile = new File(pathDefaultDatabases.concat(filename).replace(".json", "").concat("_default.json"));
+    public void loadDefaultFiles(String filename, Class<T> typeParameterClass) throws IOException {
+        String defaultFile = filename.replace(".json", "").concat("_default.json");
+        T fromFile = objectMapper.readValue(new File(pathDefaultDatabases.concat(defaultFile)), typeParameterClass);
 
-        File dbFile = new File(pathDatabase.concat(filename));
-
-        try {
-            Files.copy(defaultDBFile.toPath(), dbFile.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeIntoFile(filename, fromFile);
 
     }
 
