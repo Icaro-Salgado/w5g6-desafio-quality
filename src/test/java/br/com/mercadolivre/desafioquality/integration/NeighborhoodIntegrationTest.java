@@ -1,5 +1,6 @@
 package br.com.mercadolivre.desafioquality.integration;
 
+import br.com.mercadolivre.desafioquality.exceptions.DbEntryAlreadyExists;
 import br.com.mercadolivre.desafioquality.models.Neighborhood;
 import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
 import br.com.mercadolivre.desafioquality.test_utils.TestUtils;
@@ -11,13 +12,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootTest
@@ -220,5 +224,32 @@ public class NeighborhoodIntegrationTest {
                 "/api/v1/neighborhood/",
                 "O comprimento do bairro não pode exceder 45 caracteres!",
                 mockMvc);
+    }
+
+    @Test
+    @DisplayName("NeighborhoodController - POST - /api/v1/neighborhood/ - testando adição de bairro já existente")
+    public void testDistrictAlreayAddedInPostNeighborhood() throws Exception {
+
+        List<Neighborhood> neighborhoods = new ArrayList<>();
+        Neighborhood neighborhood = new Neighborhood(UUID.randomUUID(), "O Clone", BigDecimal.valueOf(20000.0));
+        neighborhoods.add(neighborhood);
+
+        databaseUtils.writeIntoFile(filename, neighborhoods);
+
+        ObjectMapper Obj = new ObjectMapper();
+
+        String payload = Obj.writeValueAsString(neighborhood);
+
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/neighborhood/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(payload))
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andReturn();
+
+        Optional<DbEntryAlreadyExists> someException = Optional.ofNullable((DbEntryAlreadyExists) result.getResolvedException());
+        if (someException.isPresent()) {
+            String msg = someException.get().getMessage();
+            Assertions.assertEquals(msg, neighborhood.getNameDistrict().concat(" já está cadastrado na base de dados"));
+        }
     }
 }
