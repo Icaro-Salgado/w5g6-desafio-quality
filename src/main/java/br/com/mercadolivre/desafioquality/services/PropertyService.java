@@ -106,4 +106,14 @@ public class PropertyService {
 
         return properties;
     }
+
+    public void updateProperty(UUID propertyId, String propName) throws DatabaseManagementException, DatabaseReadException, DatabaseWriteException {
+        Property property = findProperty(propertyId);
+        property.setPropName(propName);
+        propertyRepository.update(propertyId, property);
+    }
+
+    public void deleteProperty(UUID propertyId) throws DatabaseWriteException, DatabaseReadException {
+        propertyRepository.delete(propertyId);
+    }
 }

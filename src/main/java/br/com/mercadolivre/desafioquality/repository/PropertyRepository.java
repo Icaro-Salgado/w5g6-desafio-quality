@@ -52,7 +52,21 @@ public class PropertyRepository implements ApplicationRepository<Property, UUID>
     }
 
     @Override
-    public Integer update(Map<String, Object> filters, Map<String, Object> values) {
-        return 0;
+    public void update(UUID id, Property updatedProperty) throws DatabaseWriteException, DatabaseReadException {
+        List<Property> properties = read();
+        properties = properties.stream()
+                .map(property -> property.getId().equals(id) ? updatedProperty : property)
+                .collect(Collectors.toList());
+        fileManager.writeIntoFile(filename, properties);
+    }
+
+    @Override
+    public void delete(UUID propertyId) throws DatabaseReadException, DatabaseWriteException {
+        List<Property> properties = read();
+
+        properties = properties.stream()
+                .filter(property -> !property.getId().equals(propertyId))
+                .collect(Collectors.toList());
+        fileManager.writeIntoFile(filename, properties);
     }
 }

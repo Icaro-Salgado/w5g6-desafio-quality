@@ -62,11 +62,20 @@ public class NeighborhoodRepository implements ApplicationRepository<Neighborhoo
     }
 
     @Override
-    public Integer update(Map<String, Object> filters, Map<String, Object> values) { return 0; }
-
-    public void delete(Neighborhood neighborhood) throws DatabaseReadException, DatabaseWriteException {
+    public void update(UUID id, Neighborhood updatedNeighborhood) throws DatabaseReadException, DatabaseWriteException {
         List<Neighborhood> neighborhoods = read();
-        neighborhoods = neighborhoods.stream().filter(n -> !n.equals(neighborhood)).collect(Collectors.toList());
+        neighborhoods = neighborhoods.stream()
+                .map(neighborhood -> neighborhood.getId().equals(id) ? updatedNeighborhood : neighborhood)
+                .collect(Collectors.toList());
+        fileManager.writeIntoFile(filename, neighborhoods);
+    }
+
+    @Override
+    public void delete(UUID id) throws DatabaseReadException, DatabaseWriteException {
+        List<Neighborhood> neighborhoods = read();
+        neighborhoods = neighborhoods.stream()
+                .filter(n -> !n.getId().equals(id))
+                .collect(Collectors.toList());
         fileManager.writeIntoFile(filename, neighborhoods);
     }
 }

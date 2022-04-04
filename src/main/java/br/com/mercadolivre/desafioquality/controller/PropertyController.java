@@ -2,6 +2,7 @@ package br.com.mercadolivre.desafioquality.controller;
 
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
 import br.com.mercadolivre.desafioquality.dto.request.CreatePropertyDTO;
+import br.com.mercadolivre.desafioquality.dto.request.UpdatePropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyDetailDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyListDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
@@ -77,16 +78,37 @@ public class PropertyController {
         return ResponseEntity.ok(PropertyMapper.toPropertyDetailResponse(foundedProperty, foundedPropertyRoom));
     }
 
-    @GetMapping("/property-area/{propertyId}")
-    public ResponseEntity<PropertyValueDTO> requestPropertyArea(@PathVariable UUID propertyId) throws DatabaseReadException, DatabaseManagementException {
+    @GetMapping("/property-area/{id}")
+    public ResponseEntity<PropertyValueDTO> requestPropertyArea(@PathVariable UUID id) throws DatabaseReadException, DatabaseManagementException {
 
-        Property property = propertyService.findProperty(propertyId);
+        Property property = propertyService.findProperty(id);
 
         Double totalArea = propertyService.calcPropertyArea(property);
 
         PropertyValueDTO propertyResponse = PropertyMapper.toPropertyResponseArea(property, totalArea);
 
         return ResponseEntity.status(HttpStatus.OK).body(propertyResponse);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateProperty(
+            @PathVariable UUID id,
+            @RequestBody UpdatePropertyDTO updatePropertyDTO,
+            UriComponentsBuilder uriBuilder
+    ) throws DatabaseManagementException, DatabaseWriteException, DatabaseReadException {
+        propertyService.updateProperty(id, updatePropertyDTO.propName);
+        URI uri = uriBuilder
+                .path("/api/v1/property/{id}")
+                .buildAndExpand(id)
+                .toUri();
+
+        return ResponseEntity.noContent().location(uri).build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProperty(@PathVariable UUID id) throws DatabaseWriteException, DatabaseReadException {
+        propertyService.deleteProperty(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
