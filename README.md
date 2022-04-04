@@ -63,10 +63,9 @@ java -jar ./target/desafio-quality-0.0.1-SNAPSHOT.jar
 
 #### Realize uma chamada de teste em algum endpoint
 ``` sh
-
+curl -X GET http://localhost:8080/api/v1/property/
 ```
 
-Os endpoints estão discriminados na pasta **doc** do projeto.
 Caso utilize o POSTMAN você pode importar a collection contida na pasta **doc** também.
 
 
