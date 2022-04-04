@@ -2,16 +2,13 @@ package br.com.mercadolivre.desafioquality.controller;
 
 import br.com.mercadolivre.desafioquality.dto.mapper.PropertyMapper;
 import br.com.mercadolivre.desafioquality.dto.request.CreatePropertyDTO;
-import br.com.mercadolivre.desafioquality.dto.request.PropertyDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyDetailDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyListDTO;
-import br.com.mercadolivre.desafioquality.dto.response.PropertyResponseDTO;
 import br.com.mercadolivre.desafioquality.dto.response.PropertyValueDTO;
 import br.com.mercadolivre.desafioquality.exceptions.*;
 import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.services.PropertyService;
-import br.com.mercadolivre.desafioquality.services.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
