@@ -77,7 +77,6 @@ public class NeighborhoodService {
     }
 
     public void deleteNeighborhoodById(UUID id) throws DatabaseReadException, DatabaseWriteException {
-        Neighborhood neighborhood = getNeighborhoodById(id);
-        this.neighborhoodRepository.delete(neighborhood);
+        this.neighborhoodRepository.delete(id);
     }
 }

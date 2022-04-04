@@ -8,6 +8,11 @@ import br.com.mercadolivre.desafioquality.models.Property;
 import br.com.mercadolivre.desafioquality.models.Room;
 import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
 import br.com.mercadolivre.desafioquality.test_utils.PropertyUtils;
+import br.com.mercadolivre.desafioquality.dto.request.UpdatePropertyDTO;
+import br.com.mercadolivre.desafioquality.models.Neighborhood;
+import br.com.mercadolivre.desafioquality.models.Property;
+import br.com.mercadolivre.desafioquality.models.Room;
+import br.com.mercadolivre.desafioquality.test_utils.DatabaseUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,10 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -61,6 +70,7 @@ public class PropertyControllerTests {
         databaseUtils.writeIntoFile(neighborhoodsFile, PropertyUtils.getFakeNeighborhoods());
         databaseUtils.writeIntoFile(propertyFile, PropertyUtils.getFakeProperties());
     }
+        List<Property> properties = new ArrayList<>();
 
     @Test
     @DisplayName("PropertyController - GET - /api/v1/property/property-area/{propertyId}")
@@ -176,5 +186,27 @@ public class PropertyControllerTests {
                 .content(payload))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
+    }
+
+    @Test
+    @DisplayName("PropertyController - DELETE - /api/v1/property/{propertyId}")
+    public void testDeleteProperty() throws Exception {
+        populateFakeDatabase();
+        UUID id = UUID.fromString("77b3737d-7450-4d94-8f95-936e2c17e2cc");
+
+        mockMvc.perform(MockMvcRequestBuilders.
+                        delete("/api/v1/property/{propertyId}", id))
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+        AtomicBoolean deleted = new AtomicBoolean(true);
+
+        Property[] properties = databaseUtils.readFromFile(propertyFile, Property[].class);
+        Arrays.stream(properties).forEach(property -> {
+            if (property.getId().equals(id)) {
+                deleted.set(false);
+            }
+        });
+
+        Assertions.assertTrue(deleted.get());
     }
 }

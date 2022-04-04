@@ -64,19 +64,6 @@ public class NeighborhoodServiceTests {
     }
 
     @Test
-    @DisplayName("Given an neighborhood id, when call delete method, then getNeighborhoodById must be called once")
-    public void testDeleteMethodWasCalled() throws DatabaseReadException, DatabaseWriteException {
-        Neighborhood neighborhood = new Neighborhood();
-        UUID randomUUID = UUID.randomUUID();
-        neighborhood.setId(randomUUID);
-
-        Mockito.when(neighborhoodRepository.find(Mockito.any())).thenReturn(Optional.of(neighborhood));
-        neighborhoodService.deleteNeighborhoodById(randomUUID);
-
-        Mockito.verify(neighborhoodRepository, Mockito.times(1)).delete(neighborhood);
-    }
-
-    @Test
     @DisplayName("Given a page and limit, when call listNeighborhood, then return all data from calculated offset")
     public void testIfReturnAllWithLimitProperties() throws DatabaseReadException {
         List<Neighborhood> expectedList = NeighborhoodUtils.getMockList(10);
