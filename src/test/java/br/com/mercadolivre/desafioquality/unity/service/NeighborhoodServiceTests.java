@@ -169,4 +169,16 @@ public class NeighborhoodServiceTests {
 
         Assertions.assertEquals(testResult, neighborhoodOne.getId());
     }
+
+    @Test
+    @DisplayName("Given a neighborhood already added to DB, when call createNeighborhood, then throws DbEntryAlreadyExists")
+    public void testIfThrowsAlreadyExistsExceptoion() throws DatabaseReadException {
+
+        Mockito.when(neighborhoodRepository.read()).thenReturn(NeighborhoodUtils.getMockList(1));
+
+        List<Neighborhood> neighborhoods = neighborhoodRepository.read();
+        Neighborhood clone = neighborhoods.get(0);
+
+        assertThrows(DbEntryAlreadyExists.class, () -> neighborhoodService.createNeighborhood(clone));
+    }
 }
