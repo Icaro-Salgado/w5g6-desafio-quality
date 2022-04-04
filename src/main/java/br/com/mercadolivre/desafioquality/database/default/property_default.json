@@ -1,15 +1,67 @@
-[{
-  "id": "77b3737d-7450-4d94-8f95-936e2c17e2cc",
-  "propName": "Sonho Meu",
-  "propDistrict": "São Paulo",
-  "propRooms": [
-    {
-      "id": "992b27ac-3f12-42e2-9925-b2f922c48ded",
-      "roomName": "bedroom",
-      "roomWidth": 5,
-      "roomLength": 4,
-      "roomTotalArea": 20
-    }
-  ],
-  "propValue": 200000
-}]
+[
+  {
+    "id": "77b3737d-7450-4d94-8f95-936e2c17e2cc",
+    "propName": "Sonho Meu",
+    "propDistrict": "São Paulo",
+    "propRooms": [
+      {
+        "id": "992b27ac-3f12-42e2-9925-b2f922c48ded",
+        "roomName": "bedroom",
+        "roomWidth": 5.0,
+        "roomLength": 4.0,
+        "roomTotalArea": 20.0
+      }
+    ],
+    "propValue": 200000,
+    "propArea": null,
+    "largestRoomId": null
+  },
+  {
+    "id": "f6b42167-1890-4bf0-bb61-f181ef8fbf78",
+    "propName": "Casa dahora",
+    "propDistrict": "São Paulo",
+    "propRooms": [
+      {
+        "id": "d741680a-99ea-4611-b2f7-c0c2eb213701",
+        "roomName": "Quarto legal",
+        "roomWidth": 2.0,
+        "roomLength": 5.0,
+        "roomTotalArea": 10.0
+      }
+    ],
+    "propValue": null,
+    "propArea": 10.0,
+    "largestRoomId": null
+  },
+  {
+    "id": "d18165ef-0687-4597-9cfe-7c95c4de896e",
+    "propName": "Casa dahora 2",
+    "propDistrict": "São Paulo",
+    "propRooms": [
+      {
+        "id": "30810b5c-d1b4-427e-b2c1-ab660d2c27c7",
+        "roomName": "Quarto legal",
+        "roomWidth": 2.0,
+        "roomLength": 5.0,
+        "roomTotalArea": 10.0
+      },
+      {
+        "id": "228bce5a-6aac-4e24-bf18-bfd7460571c1",
+        "roomName": "Quarto Super legal",
+        "roomWidth": 2.0,
+        "roomLength": 5.0,
+        "roomTotalArea": 10.0
+      },
+      {
+        "id": "5a6cc978-06e3-497a-97af-f8523a7f99ec",
+        "roomName": "Quarto Ruinzão",
+        "roomWidth": 2.0,
+        "roomLength": 5.0,
+        "roomTotalArea": 10.0
+      }
+    ],
+    "propValue": null,
+    "propArea": 30.0,
+    "largestRoomId": null
+  }
+]
