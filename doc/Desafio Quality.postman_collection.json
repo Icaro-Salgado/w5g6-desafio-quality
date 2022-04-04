@@ -1,0 +1,226 @@
+{
+	"info": {
+		"_postman_id": "d65413d8-3e4c-4a34-901e-9c8f7603714d",
+		"name": "Desafio Quality",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "US-0001",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}/api/v1/property/property-area/77b3737d-7450-4d94-8f95-936e2c17e2cc",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"property",
+						"property-area",
+						"77b3737d-7450-4d94-8f95-936e2c17e2cc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US-0002",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}/api/v1/property/property-value/77b3737d-7450-4d94-8f95-936e2c17e2cc",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"property",
+						"property-value",
+						"77b3737d-7450-4d94-8f95-936e2c17e2cc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US-0003",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}/{{API_V1}}/room/biggest-room/77b3737d-7450-4d94-8f95-936e2c17e2cc",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"{{API_V1}}",
+						"room",
+						"biggest-room",
+						"77b3737d-7450-4d94-8f95-936e2c17e2cc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US-0004",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}/{{API_V1}}/property/77b3737d-7450-4d94-8f95-936e2c17e2cc",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"{{API_V1}}",
+						"property",
+						"77b3737d-7450-4d94-8f95-936e2c17e2cc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LIST_PROPERTYS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{LOCAL}}/{{API_V1}}/property/",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"{{API_V1}}",
+						"property",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE_PROPERTY",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"propName\": \"Casa dahora 2\",\n    \"propDistrict\": \"São Paulo\",\n    \"rooms\": [\n        {\n            \"name\": \"Quarto legal\",\n            \"width\": 2.0,\n            \"length\": 5.0\n        },\n        {\n            \"name\": \"Quarto Super legal\",\n            \"width\": 2.0,\n            \"length\": 5.0\n        },\n        {\n            \"name\": \"Quarto Ruinzão\",\n            \"width\": 2.0,\n            \"length\": 5.0\n        }\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}/{{API_V1}}/property",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"{{API_V1}}",
+						"property"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DETAIL_PROPERTY",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/property/38c66c05-91fd-4f8a-bd71-e614c3b35ec9",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"property",
+						"38c66c05-91fd-4f8a-bd71-e614c3b35ec9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE_NEIGHBORHOOD",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nameDistrict\": \"Vila Olímpia\",\n    \"valueDistrictM2\": 1000.0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{LOCAL}}/{{API_V1}}/neighborhood/",
+					"host": [
+						"{{LOCAL}}"
+					],
+					"path": [
+						"{{API_V1}}",
+						"neighborhood",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FIND_NEIGHBORHOOD",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "LIST_NEIGHBORHOODS",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

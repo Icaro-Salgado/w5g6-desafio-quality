@@ -1,7 +1,12 @@
 [
   {
     "id": "36ea2258-52e4-47a1-a980-83e2e943a986",
-    "nameDistrict":  "São Paulo",
-    "valueDistrictM2": 2000.0
+    "nameDistrict": "São Paulo",
+    "valueDistrictM2": 20000.0
+  },
+  {
+    "id": "f0c6b24d-6b31-432d-a4d3-7734156012cc",
+    "nameDistrict": "Vila Olímpia",
+    "valueDistrictM2": 1000.0
   }
 ]
